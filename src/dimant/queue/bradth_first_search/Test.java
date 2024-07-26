@@ -8,16 +8,18 @@ public class Test {
 
         Person oleg = new Person("oleg", 3456, false);
         Person dima = new Person("diman", 3573, false);
+        Person sacha = new Person("sacha", 3579, false);
         Person vitiy = new Person("vitiy", 343, false);
         Person ivan = new Person("ivan", 65863, false);
+        Person ilia = new Person("ilia", 65833, false);
         Person petr = new Person("petr", 12312, false);
         Person danil = new Person("danil", 780978, true);
         Person tanya = new Person("tanya", 213123, true);
 
         oleg.addFriends(dima);
-        oleg.addFriends(vitiy);
+        oleg.addFriends(sacha);
 
-        vitiy.addFriends(ivan);
+        vitiy.addFriends(ilia);
         vitiy.addFriends(tanya);
 
         ivan.addFriends(petr);
@@ -26,26 +28,32 @@ public class Test {
 
         List<Person> personList = new ArrayList<>();
         personList.add(oleg);
+        personList.add(vitiy);
+        personList.add(ivan);
 
 
         Queue<Person> peoples = new LinkedList<>();
-        List<Person> resultList = new LinkedList<>();
-        List<Person> tempQueuePerson = new LinkedList<>();
+        peoples.addAll(personList);
+        int counter = 0;
 
-        for (Person person : personList) {
-            peoples.add(person);
-            if (peoples.peek().isPlayGuitar()) {
-                resultList.add(peoples.remove());
+        while (!peoples.isEmpty()) {
+            if (!peoples.peek().isPlayGuitar() && peoples.peek().getFriends().size() != 0) {
+                peoples.addAll(peoples.peek().getFriends());
+                peoples.remove();
+                counter++;
+                System.out.println("Step + " + counter );
+            } else if (peoples.peek().isPlayGuitar()){
+                System.out.println("гитарист найден + " + peoples.peek().toString());
                 return;
-            } else if (peoples.peek().getFriends().size() != 0) {
-                tempQueuePerson.add(peoples.remove());
-                    } else if (peoples.peek().getFriends().size() != 0) {
-                        peoples.addAll(peoples.element().getFriends());
-                        resultList.add(peoples.remove());
-                    } else peoples.remove();
-                }
-            }
+            } else peoples.remove();
+
         }
+
+
+    }
+}
+
+
 
 
 

@@ -15,7 +15,6 @@ public class test2 {
         list.add(8);
         list.add(9);
         list.add(10);
-
         boolean isValid = true;
 
         for (int i = 0; i < list.size(); i++) {
