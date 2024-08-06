@@ -9,7 +9,7 @@ public class Person {
     private List<Person> friends = new ArrayList<>();
     private int numberPhone;
     private boolean isPlayGuitar;
-    private boolean isOpen;
+    private Person friendCall;
 
     public Person(String name, int numberPhone, boolean isPlayGuitar) {
         this.name = name;
@@ -28,12 +28,19 @@ public class Person {
 
     }
 
-    public void setOpen(boolean open) {
-        this.isOpen = open;
+    public void setFriendCall(Person friendCall) {
+        this.friendCall = friendCall;
     }
+    public List<Person> myFriends(){
+        List<Person> personList= new ArrayList<>();
+        Person temp = friendCall;
+        personList.add(temp);
+        Person one = temp.friendCall;
+        personList.add(one);
+        Person two = one.friendCall;
+        personList.add(two);
 
-    public boolean isHasOpen() {
-        return isOpen;
+        return personList;
     }
 
     public List<Person> getFriends() {
