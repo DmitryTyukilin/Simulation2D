@@ -1,7 +1,9 @@
 package dimant.simulation;
 
+import dimant.simulation.service.CoordinateService;
+
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class Simulation {
@@ -9,24 +11,21 @@ public class Simulation {
         Wolf bim = new Wolf("bim");
         Wolf reks = new Wolf("reks");
         Wolf bony = new Wolf("bony");
-        List<Wolf> wolfs = new ArrayList<>();
-        wolfs.add(bim);
-        wolfs.add(reks);
-        wolfs.add(bony);
+        Entity ger = new Hare("pert");
+        List<Wolf> wolfsList = new ArrayList<>();
+        wolfsList = Arrays.asList(bim,reks,bony);
 
-        CoordinatesService coordinatesService = new CoordinatesService();
-        MapBoard mapBoard = new MapBoard();
-        EntityService entityService = new EntityService(wolfs,mapBoard,coordinatesService);
-        entityService.addEntityMap();
-        entityService.addEntityMap();
-        entityService.addEntityMap();
-
-
-
-
-
+        CoordinateService coordinateService = new CoordinateService();
+        coordinateService.creatCoordinates(6,6);
+        MapBoard mapBoard = new MapBoard(coordinateService);
+        mapBoard.addWolfsOnMapOnEvenCoordinates(wolfsList,coordinateService);
+        System.out.println();
 
 
 
     }
+
+
 }
+
+

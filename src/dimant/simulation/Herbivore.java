@@ -1,19 +1,16 @@
 package dimant.simulation;
 
-public class Wolf extends Entity{
+public class Herbivore extends Entity{
+    private String name;
 
-    private final String name;
-
-    public Wolf(String name) {
+    public Herbivore(String name) {
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Wolf{" +
+        return "Herbivore{" +
                 "name='" + name + '\'' +
                 '}';
     }
 }
-
-

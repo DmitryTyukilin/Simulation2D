@@ -3,12 +3,12 @@ package dimant.simulation;
 public class Coordinate {
     private Integer x;
     private Integer y;
-    private boolean isFree;
+    private Entity entity;
 
-    public Coordinate(Integer x, Integer y, boolean isFree) {
+
+    public Coordinate(Integer x, Integer y) {
         this.x = x;
         this.y = y;
-        this.isFree = isFree;
     }
 
     public Integer getX() {
@@ -27,11 +27,12 @@ public class Coordinate {
         this.y = y;
     }
 
-    public boolean isFree() {
-        return isFree;
+    public Entity getEntity() {
+        return entity;
     }
 
-    public void setFree(boolean free) {
-        isFree = free;
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+
     }
 }
