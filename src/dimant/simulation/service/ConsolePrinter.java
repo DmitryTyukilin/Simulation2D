@@ -23,6 +23,7 @@ public class ConsolePrinter {
         return switch (entity.getClass().getSimpleName()) {
             case "Wolf" -> EntityEnum.WOLF.getEmoji();
             case "Hare" -> EntityEnum.HARE.getEmoji();
+            case "Place" -> EntityEnum.PLACE.getEmoji();
             default -> "Entity не обнаружено";
         };
     }

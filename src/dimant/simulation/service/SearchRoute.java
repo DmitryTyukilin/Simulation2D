@@ -20,5 +20,7 @@ public class SearchRoute {
 
     }
 
-    public Queue<Coordinate> 
+    public Queue<Coordinate> getFreeCoordinateAboutCurrent(Coordinate current) {
+
+    }
 }

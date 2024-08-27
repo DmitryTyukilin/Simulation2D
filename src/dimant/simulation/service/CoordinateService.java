@@ -1,6 +1,7 @@
 package dimant.simulation.service;
 
 import dimant.simulation.Coordinate;
+import dimant.simulation.Place;
 import dimant.simulation.Wolf;
 
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ public class CoordinateService {
             for (int coordinateY = 0; coordinateY < sizeY; coordinateY++) {
                 coordinates.add(new Coordinate(coordinateX, coordinateY));
             }
+        }
+        for(Coordinate coordinate : coordinates) {
+            coordinate.setEntity(new Place());
         }
     }
     public List<Coordinate> getListCoordinates(){

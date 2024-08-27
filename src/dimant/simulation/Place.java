@@ -1,4 +1,4 @@
 package dimant.simulation;
 
-public class Place {
+public class Place extends Entity {
 }
