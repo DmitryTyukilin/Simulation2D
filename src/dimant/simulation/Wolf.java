@@ -14,6 +14,10 @@ public class Wolf extends Entity{
                 "name='" + name + '\'' +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
 }
 
 

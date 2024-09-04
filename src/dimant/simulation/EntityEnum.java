@@ -3,7 +3,10 @@ package dimant.simulation;
 public enum EntityEnum {
     WOLF("🐺"),
     HARE("🦓"),
-    PLACE("🔳");
+    PLACE("🔳"),
+    ROCK("🗻");
+
+
     private String emoji;
 
     EntityEnum(String emoji) {

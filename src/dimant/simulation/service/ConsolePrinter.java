@@ -3,18 +3,20 @@ package dimant.simulation.service;
 import dimant.simulation.Coordinate;
 import dimant.simulation.Entity;
 import dimant.simulation.EntityEnum;
+import dimant.simulation.MapBoard;
 
 import java.util.List;
 
 public class ConsolePrinter {
+    MapBoard mapBoard;
 
-
-    public ConsolePrinter() {
+    public ConsolePrinter(MapBoard mapBoard) {
+        this.mapBoard = mapBoard;
     }
 
-    public void printEntity(List<Coordinate> coordinates) {
-        for (Coordinate coordinate : coordinates) {
-            Entity entity = coordinate.getEntity();
+    public void printEntity() {
+        for (Entity entity : mapBoard.getEntityList()) {
+
             System.out.println(returnEmojiEntity(entity));
         }
     }
@@ -24,6 +26,7 @@ public class ConsolePrinter {
             case "Wolf" -> EntityEnum.WOLF.getEmoji();
             case "Hare" -> EntityEnum.HARE.getEmoji();
             case "Place" -> EntityEnum.PLACE.getEmoji();
+            case "Rock" -> EntityEnum.ROCK.getEmoji();
             default -> "Entity не обнаружено";
         };
     }

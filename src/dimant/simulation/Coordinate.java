@@ -1,9 +1,10 @@
 package dimant.simulation;
 
+import java.util.Objects;
+
 public class Coordinate {
     private Integer x;
     private Integer y;
-    private Entity entity;
 
 
     public Coordinate(Integer x, Integer y) {
@@ -15,10 +16,6 @@ public class Coordinate {
         return x;
     }
 
-    public void setX(Integer x) {
-        this.x = x;
-    }
-
     public Integer getY() {
         return y;
     }
@@ -27,12 +24,20 @@ public class Coordinate {
         this.y = y;
     }
 
-    public Entity getEntity() {
-        return entity;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinate that = (Coordinate) o;
+        return Objects.equals(x, that.x) && Objects.equals(y, that.y);
     }
 
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
+
+
 }
+
