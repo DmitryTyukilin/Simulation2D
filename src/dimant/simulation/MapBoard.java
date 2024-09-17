@@ -9,7 +9,6 @@ import java.util.*;
 public class MapBoard {
     private List<Coordinate> coordinates;
     private Map<Coordinate, Wolf> wolfs = new HashMap<>();
-
     private Map<Coordinate, Entity> entityMap = new HashMap<>();
 
 
@@ -31,6 +30,8 @@ public class MapBoard {
 
 
 
+
+
     public List<Entity> getEntityList() {
         List<Entity> entitylist = new ArrayList<>();
         entitylist.addAll(entityMap.values());
@@ -38,7 +39,7 @@ public class MapBoard {
     }
 
 
-    public Coordinate getWolfCoordinate() {
+    public Coordinate getCoordinateWolf() {
         Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null
         for (Coordinate coordinateCurrent : entityMap.keySet()){
             if(entityMap.get(coordinateCurrent) instanceof Wolf) {
@@ -46,6 +47,16 @@ public class MapBoard {
             }
         }
         return coordinate;
+    }
+
+    public Wolf getWolf(Coordinate currentCoordinateWolf) {
+        Wolf wolf = null; // TODO: 03.09.2024 не возвращай null
+        for (Entity coordinateCurrent : entityMap.values()){
+            if(coordinateCurrent instanceof Wolf) {
+                wolf = (Wolf) coordinateCurrent;
+            }
+        }
+        return wolf;
     }
 
 
@@ -65,7 +76,9 @@ public class MapBoard {
     public void addEntityMap(Entity entity, CoordinateService coordinateService) {
         Coordinate coordinate = getFreeCoordinate();
         entityMap.put(coordinate, entity);
-
+    }
+    public void addEntityMap(Entity entity, Coordinate coordinateNewPosition) {
+        entityMap.put(coordinateNewPosition, entity);
     }
 
     public void addEntityMapByCoordinate(Entity entity, int rowX, int colY) {

@@ -2,6 +2,7 @@ package dimant.simulation;
 
 import dimant.simulation.service.ConsolePrinter;
 import dimant.simulation.service.CoordinateService;
+import dimant.simulation.service.EntityService;
 import dimant.simulation.service.SearchRoute;
 
 
@@ -35,12 +36,20 @@ public class Simulation {
 
 
         System.out.println();
-        SearchRoute searchRoute = new SearchRoute(coordinateService.getListCoordinates(), mapBoard);
-        searchRoute.searchHare(mapBoard.getWolfCoordinate());
+        SearchRoute searchRoute = new SearchRoute(mapBoard);
+        searchRoute.searchHare(mapBoard.getCoordinateWolf());// получаю текущую координату волка
+        //запускается поиск пути до тровоядного
         printer.printEntity();
-
-        System.out.println();
-
+        EntityService entityService = new EntityService(mapBoard,searchRoute);
+        entityService.makeMoveWolf();
+        printer.printEntity();
+        entityService.makeMoveWolf();
+        printer.printEntity();
+        entityService.makeMoveWolf();
+        printer.printEntity();
+        entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
 
     }
 

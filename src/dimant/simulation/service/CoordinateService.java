@@ -28,28 +28,8 @@ public class CoordinateService {
         return coordinates;
     }
 
-//    public Coordinate getFreeCoordinate() {
-//        Coordinate result = null;
-//        for (Coordinate coordinate : coordinates) {
-//            if (coordinate.getEntity() instanceof Place && !notFreeCoordinates.contains(coordinate)) {
-//                result = coordinate; // TODO: 02.09.2024 отрефакторить, нельзя возвращать null
-//                notFreeCoordinates.add(result);
-//                break;
-//            }
-//        }
-//        return result;
-//    }
 
-    public Queue<Coordinate> getEvenCoordinates() {
-        Queue<Coordinate> coordinatesEven = new LinkedList<>();
-        for (Coordinate coordinate : coordinates) {
-            if (coordinate.getX() != 0 && coordinate.getX() % 2 == 0 && coordinate.getY() != 0 && coordinate.getY() % 2 == 0) {
-                coordinatesEven.add(coordinate);
-            }
 
-        }
-        return coordinatesEven;
-    }
 
 
 }

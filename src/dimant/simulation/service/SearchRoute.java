@@ -9,35 +9,47 @@ public class SearchRoute {
     private MapBoard mapBoard;
     private Map<Coordinate, Coordinate> savePath = new HashMap<>();
     private Queue<Coordinate> checkCoordinates = new LinkedList<>();
-    private Set<Coordinate> viewedCoordinates = new HashSet<>();
+    private Queue<Coordinate> viewedCoordinates = new LinkedList<>();
+    private boolean isPathFound;
 
 
-    public SearchRoute(List<Coordinate> coordinates, MapBoard mapBoard) {
+    public SearchRoute(MapBoard mapBoard) {
         this.mapBoard = mapBoard;
+        this.isPathFound = false;
     }
 
 
     public void searchHare(Coordinate coordinateWolf) {
-        Queue<Coordinate> notCheckCoordinates;
-
         checkCoordinates.add(coordinateWolf);
         while (!checkCoordinates.isEmpty()) {
-            Coordinate currentCoordinate = checkCoordinates.remove();
-            notCheckCoordinates = getFreeCoordinatesAboutCurrent(currentCoordinate);
-            while (!notCheckCoordinates.isEmpty()) {
-                Coordinate coordinate = notCheckCoordinates.remove();
-                if (hasEntityIsCoordinateHare(coordinate)) {
-                    savePath(coordinate, currentCoordinate);
-                    break;
-                } else if (!hasCoordinateQueue(coordinate)) {
-                    checkCoordinates.add(coordinate);
-                    savePath(coordinate, currentCoordinate);
-                    viewedCoordinates.add(coordinate);
-                }
-
+            Coordinate viewCoordinate = checkCoordinates.remove();
+            // если на извлеченной координате из списка просмотренных координат
+            // находится травоядное то цель найдена поиск завершается
+            if (hasEntityIsCoordinateHare(viewCoordinate)) {
+                viewedCoordinates.add(viewCoordinate);
+                System.out.println("цель найдена");
+                isPathFound = true;
+                break;
+                // если координата, которую мы рассматриваем нет в списке
+                // просмотренных координат, то я добавляю её в список просмотренных
+                // а также добовляю все свободные соседние координаты в список проверяемых
+            } else if (!hasCoordinateInViewedCoordinates(viewCoordinate)) {
+                viewedCoordinates.add(viewCoordinate);
+                checkCoordinates.addAll(getFreeCoordinatesAboutCurrent(viewCoordinate));
             }
         }
-        System.out.println("Пути нет");
+        if (!isPathFound) {
+            System.out.println("пути нет");
+        } else {
+            while (!viewedCoordinates.isEmpty()) {
+                Coordinate parentCoordinate = viewedCoordinates.remove();
+                for (Coordinate childCoordinate : getFreeCoordinatesAboutCurrent(parentCoordinate)) {
+                    if (hasCoordinateInViewedCoordinates(childCoordinate)) {
+                        savePath(childCoordinate, parentCoordinate);
+                    }
+                }
+            }
+        }
     }
 
 
@@ -66,13 +78,26 @@ public class SearchRoute {
         return entity.getClass().getSimpleName().equals(Hare.class.getSimpleName());
     }
 
-    public void savePath(Coordinate currentCoordinate, Coordinate checkCoordinate) {
-        savePath.put(checkCoordinate, currentCoordinate);
+    public void savePath(Coordinate childCoordinate, Coordinate parentCoordinate) {
+        savePath.put(childCoordinate, parentCoordinate);
     }
 
-    public boolean hasCoordinateQueue(Coordinate coordinate) {
+    public HashMap<Coordinate, Coordinate> getPath(Coordinate coordinateWolf) {
+        searchHare(coordinateWolf);
+        HashMap<Coordinate, Coordinate> result = new HashMap<>();
+        for(Map.Entry<Coordinate,Coordinate> entry: savePath.entrySet()) {
+            result.put(entry.getValue(), entry.getKey());
+        }
+        return result;
+    }
+
+    public boolean hasCoordinateInViewedCoordinates(Coordinate coordinate) {
         return viewedCoordinates.contains(coordinate);
-
     }
+
+    public Coordinate getCoordinateToHare(Coordinate parent) {
+        return savePath.get(parent);
+    }
+
 
 }
