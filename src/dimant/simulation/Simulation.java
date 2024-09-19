@@ -31,25 +31,29 @@ public class Simulation {
         mapBoard.addEntityMapByCoordinate(rock2, 2, 2);
         mapBoard.addEntityMapByCoordinate(rock3, 3, 2);
         mapBoard.addEntityMapByCoordinate(rock4, 1, 4);
-        mapBoard.addEntityMapByCoordinate(bony, 2, 1);
-        mapBoard.addEntityMapByCoordinate(ger, 2, 3);
+        mapBoard.addEntityMapByCoordinate(bony, 3, 1);
+        mapBoard.addEntityMapByCoordinate(ger, 1, 3);
 
 
         System.out.println();
         SearchRoute searchRoute = new SearchRoute(mapBoard);
-        searchRoute.searchHare(mapBoard.getCoordinateWolf());// получаю текущую координату волка
+
+       // получаю текущую координату волка
         //запускается поиск пути до тровоядного
         printer.printEntity();
         EntityService entityService = new EntityService(mapBoard,searchRoute);
         entityService.makeMoveWolf();
         printer.printEntity();
         entityService.makeMoveWolf();
-        printer.printEntity();
-        entityService.makeMoveWolf();
-        printer.printEntity();
         entityService.makeMoveWolf();
         entityService.makeMoveWolf();
         entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
+        System.out.println();
+
+
+
 
     }
 

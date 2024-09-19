@@ -7,9 +7,9 @@ import java.util.*;
 public class SearchRoute {
 
     private MapBoard mapBoard;
-    private Map<Coordinate, Coordinate> savePath = new HashMap<>();
+    private HashMap<Coordinate, Coordinate> savePath = new HashMap<>();
     private Queue<Coordinate> checkCoordinates = new LinkedList<>();
-    private Queue<Coordinate> viewedCoordinates = new LinkedList<>();
+    private Deque<Coordinate> viewedCoordinates = new LinkedList<>();
     private boolean isPathFound;
 
 
@@ -42,15 +42,16 @@ public class SearchRoute {
             System.out.println("пути нет");
         } else {
             while (!viewedCoordinates.isEmpty()) {
-                Coordinate parentCoordinate = viewedCoordinates.remove();
+                Coordinate parentCoordinate = viewedCoordinates.pollLast();
                 for (Coordinate childCoordinate : getFreeCoordinatesAboutCurrent(parentCoordinate)) {
                     if (hasCoordinateInViewedCoordinates(childCoordinate)) {
-                        savePath(childCoordinate, parentCoordinate);
+                            savePath(parentCoordinate,childCoordinate);
+                        }
                     }
                 }
             }
         }
-    }
+
 
 
     public Queue<Coordinate> getFreeCoordinatesAboutCurrent(Coordinate current) {
