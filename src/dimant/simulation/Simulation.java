@@ -43,13 +43,10 @@ public class Simulation {
         printer.printEntity();
         EntityService entityService = new EntityService(mapBoard,searchRoute);
         entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
         printer.printEntity();
-        entityService.makeMoveWolf();
-        entityService.makeMoveWolf();
-        entityService.makeMoveWolf();
-        entityService.makeMoveWolf();
-        entityService.makeMoveWolf();
-        entityService.makeMoveWolf();
         System.out.println();
 
 

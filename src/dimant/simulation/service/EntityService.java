@@ -5,7 +5,8 @@ import dimant.simulation.MapBoard;
 import dimant.simulation.Place;
 import dimant.simulation.Wolf;
 
-import java.util.HashMap;
+
+
 
 public class EntityService {
     MapBoard mapBoard;
@@ -26,17 +27,15 @@ public class EntityService {
     // иначе пропустить ход и восстоновить +1 энергии
 
     public void makeMoveWolf() {
-        HashMap<Coordinate, Coordinate> currentPath;
         Coordinate currentCoordinateWolf = mapBoard.getCoordinateWolf();
-        currentPath = searchRoute.getPath(currentCoordinateWolf);
-        Coordinate newCoordinateWolf = currentPath.get(currentCoordinateWolf);
+        Coordinate newCoordinateWolf = searchRoute.getNextCoordinate(currentCoordinateWolf);
         Wolf wolf = mapBoard.getWolf(currentCoordinateWolf);
         vacatePlace(currentCoordinateWolf);
-        mapBoard.addEntityMap(wolf,newCoordinateWolf);
+        mapBoard.addEntityMap(newCoordinateWolf,wolf);
 
     }
 
     public void vacatePlace(Coordinate currentCoordinate){
-        mapBoard.addEntityMap(new Place(), currentCoordinate);
+        mapBoard.addEntityMap(currentCoordinate, new Place());
     }
 }

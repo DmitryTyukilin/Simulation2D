@@ -77,7 +77,7 @@ public class MapBoard {
         Coordinate coordinate = getFreeCoordinate();
         entityMap.put(coordinate, entity);
     }
-    public void addEntityMap(Entity entity, Coordinate coordinateNewPosition) {
+    public void addEntityMap(Coordinate coordinateNewPosition,Entity entity) {
         entityMap.put(coordinateNewPosition, entity);
     }
 
