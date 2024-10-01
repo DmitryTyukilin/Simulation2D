@@ -14,9 +14,8 @@ public class ConsolePrinter {
         this.mapBoard = mapBoard;
     }
 
-    public void printEntity() {
+    public void printMap() {
         for (Entity entity : mapBoard.getEntityList()) {
-
             System.out.println(returnEmojiEntity(entity));
         }
     }

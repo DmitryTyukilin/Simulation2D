@@ -12,9 +12,7 @@ import java.util.Queue;
 
 public class CoordinateService {
 
-
     private List<Coordinate> coordinates = new ArrayList<>();
-    private List<Coordinate> notFreeCoordinates = new ArrayList<>();
 
     public void creatCoordinates(int sizeX, int sizeY) {
         for (int coordinateX = 1; coordinateX < sizeX; coordinateX++) {

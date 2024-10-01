@@ -2,9 +2,11 @@ package dimant.simulation;
 
 public class Herbivore extends Entity{
     private String name;
+    private int HP;
 
-    public Herbivore(String name) {
+    public Herbivore(String name, int HP) {
         this.name = name;
+        this.HP = HP;
     }
 
     @Override
@@ -12,5 +14,9 @@ public class Herbivore extends Entity{
         return "Herbivore{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+    public void takeDamage(int damage) {
+        HP = HP - damage;
+        System.out.println("Получен урон -" + damage + " единиц");
     }
 }

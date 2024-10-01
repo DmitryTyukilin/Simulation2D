@@ -6,15 +6,11 @@ import dimant.simulation.Place;
 import dimant.simulation.Wolf;
 
 
-
-
 public class EntityService {
     MapBoard mapBoard;
-    SearchRoute searchRoute;
 
-    public EntityService(MapBoard mapBoard, SearchRoute searchRoute) {
+    public EntityService(MapBoard mapBoard) {
         this.mapBoard = mapBoard;
-        this.searchRoute = searchRoute;
     }
 // Определить текущую координату
     // Построить путь относительно новой координаты
@@ -28,14 +24,19 @@ public class EntityService {
 
     public void makeMoveWolf() {
         Coordinate currentCoordinateWolf = mapBoard.getCoordinateWolf();
-        Coordinate newCoordinateWolf = searchRoute.getNextCoordinate(currentCoordinateWolf);
-        Wolf wolf = mapBoard.getWolf(currentCoordinateWolf);
-        vacatePlace(currentCoordinateWolf);
-        mapBoard.addEntityMap(newCoordinateWolf,wolf);
-
+        SearchRoute searchRoute = new SearchRoute(mapBoard);
+        Coordinate newCoordinate = searchRoute.getNextCoordinate(currentCoordinateWolf);
+        if (mapBoard.isLocatedHare(newCoordinate)) {
+            Wolf wolf = mapBoard.getWolf(currentCoordinateWolf);
+            wolf.attack(mapBoard.getHare(newCoordinate));
+        } else {
+            Wolf wolf = mapBoard.getWolf(currentCoordinateWolf);
+            vacatePlace(currentCoordinateWolf);
+            mapBoard.addEntityMap(newCoordinate, wolf);
+        }
     }
 
-    public void vacatePlace(Coordinate currentCoordinate){
+    public void vacatePlace(Coordinate currentCoordinate) {
         mapBoard.addEntityMap(currentCoordinate, new Place());
     }
 }

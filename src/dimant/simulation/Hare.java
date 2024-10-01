@@ -1,7 +1,8 @@
 package dimant.simulation;
 
 public class Hare extends Herbivore{
-    public Hare(String name) {
-        super(name);
+    public Hare(String name, int HP) {
+        super(name,HP);
     }
+
 }

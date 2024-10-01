@@ -80,8 +80,9 @@ public class SearchRoute {
     }
 
 
-    public void createSavePath(ParentChildCoordinate coordinate) {
-        Coordinate currentCoordinateParent = coordinate.parent;
+    public void createSavePath(ParentChildCoordinate coordinateTarget) {
+        Coordinate currentCoordinateParent = coordinateTarget.parent;
+        resultCoordinates.add(coordinateTarget.children);
         for (int i = savePath.size() - 1; i > 0; i--) {
             if (savePath.get(i).children.equals(currentCoordinateParent)) {
                 resultCoordinates.add(savePath.get(i).children);

@@ -3,7 +3,6 @@ package dimant.simulation;
 import dimant.simulation.service.ConsolePrinter;
 import dimant.simulation.service.CoordinateService;
 import dimant.simulation.service.EntityService;
-import dimant.simulation.service.SearchRoute;
 
 
 import java.util.*;
@@ -14,7 +13,7 @@ public class Simulation {
         Wolf bim = new Wolf("bim");
         Wolf reks = new Wolf("reks");
         Wolf bony = new Wolf("bony");
-        Hare ger = new Hare("pert");
+        Hare ger = new Hare("pert",10);
         Entity rock = new Rock();
         Entity rock2 = new Rock();
         Entity rock3 = new Rock();
@@ -36,20 +35,21 @@ public class Simulation {
 
 
         System.out.println();
-        SearchRoute searchRoute = new SearchRoute(mapBoard);
+
 
        // получаю текущую координату волка
         //запускается поиск пути до тровоядного
-        printer.printEntity();
-        EntityService entityService = new EntityService(mapBoard,searchRoute);
+        printer.printMap();
+        EntityService entityService = new EntityService(mapBoard);
         entityService.makeMoveWolf();
         entityService.makeMoveWolf();
         entityService.makeMoveWolf();
         entityService.makeMoveWolf();
-        printer.printEntity();
+        entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
+        entityService.makeMoveWolf();
+        printer.printMap();
         System.out.println();
-
-
 
 
     }

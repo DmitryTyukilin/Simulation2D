@@ -25,6 +25,9 @@ public class Wolf extends Entity{
         }
         return haveEnergy;
     }
+    public void attack(Hare hare) {
+        hare.takeDamage(5);
+    }
 }
 
 

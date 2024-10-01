@@ -13,8 +13,7 @@ public class MapBoard {
 
 
     public MapBoard(CoordinateService coordinateService) {
-        List<Coordinate> coordinates = coordinateService.getListCoordinates();
-        this.coordinates = coordinates;
+        coordinates = coordinateService.getListCoordinates();
         for(Coordinate coordinate : coordinates){
             entityMap.put(coordinate,new Place());
         }
@@ -59,6 +58,16 @@ public class MapBoard {
         return wolf;
     }
 
+    public Hare getHare(Coordinate currentCoordinate) {
+       Hare hare = null; // TODO: 03.09.2024 не возвращай null
+        for (Entity coordinateCurrent : entityMap.values()){
+            if(coordinateCurrent instanceof Hare) {
+                hare = (Hare) coordinateCurrent;
+            }
+        }
+        return hare;
+    }
+
 
 
     public Coordinate getFreeCoordinate() {
@@ -92,6 +101,10 @@ public class MapBoard {
 
     public Entity getEntityMap(Coordinate coordinateEntity) {
         return entityMap.get(coordinateEntity);
+    }
+
+    public boolean isLocatedHare(Coordinate coordinate){
+           return entityMap.get(coordinate).getClass().getSimpleName().equals(Hare.class.getSimpleName());
     }
 
     public boolean containsMapBoardIsHasRock(Coordinate coordinate) {
