@@ -5,6 +5,7 @@ import dimant.simulation.Entity;
 import dimant.simulation.EntityEnum;
 import dimant.simulation.MapBoard;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class ConsolePrinter {
@@ -15,10 +16,23 @@ public class ConsolePrinter {
     }
 
     public void printMap() {
-        for (Entity entity : mapBoard.getEntityList()) {
-            System.out.println(returnEmojiEntity(entity));
+
+        for (int x = 1; x < mapBoard.getSizeMapHeight(); x++) {
+            int counter = mapBoard.getSizeMapWeight() - 1;
+            for (int y = 1; y < mapBoard.getEntityList().size(); y++) {
+                Coordinate coordinate = mapBoard.getCoordinateByXY(x,y);
+                Entity entity = mapBoard.getEntityByCoordinate(coordinate);
+                String emojiEntity = returnEmojiEntity(entity);
+                System.out.print(emojiEntity + " ");
+                counter--;
+                if (counter == 0) {
+                    break;
+                }
+            }
+            System.out.println();
         }
     }
+
 
     public String returnEmojiEntity(Entity entity) {
         return switch (entity.getClass().getSimpleName()) {

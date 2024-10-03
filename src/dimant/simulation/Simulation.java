@@ -21,9 +21,8 @@ public class Simulation {
 
         List<Wolf> wolfsList = Arrays.asList(bim, reks, bony);
 
-        CoordinateService coordinateService = new CoordinateService();
-        coordinateService.creatCoordinates(5, 5);
-        MapBoard mapBoard = new MapBoard(coordinateService);
+
+        MapBoard mapBoard = new MapBoard(5,5);
         ConsolePrinter printer = new ConsolePrinter(mapBoard);
 
         mapBoard.addEntityMapByCoordinate(rock, 1, 1);
@@ -42,11 +41,17 @@ public class Simulation {
         printer.printMap();
         EntityService entityService = new EntityService(mapBoard);
         entityService.makeMoveWolf();
+        printer.printMap();
         entityService.makeMoveWolf();
+        printer.printMap();
         entityService.makeMoveWolf();
+        printer.printMap();
         entityService.makeMoveWolf();
+        printer.printMap();
         entityService.makeMoveWolf();
+        printer.printMap();
         entityService.makeMoveWolf();
+        printer.printMap();
         entityService.makeMoveWolf();
         printer.printMap();
         System.out.println();

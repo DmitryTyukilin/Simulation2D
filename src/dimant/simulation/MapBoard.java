@@ -10,13 +10,26 @@ public class MapBoard {
     private List<Coordinate> coordinates;
     private Map<Coordinate, Wolf> wolfs = new HashMap<>();
     private Map<Coordinate, Entity> entityMap = new HashMap<>();
+    private Integer sizeMapHeight;
+    private Integer sizeMapWeight;
 
 
-    public MapBoard(CoordinateService coordinateService) {
+    public MapBoard(int sizeMapHeight, int sizeMapWeight) {
+        this.sizeMapHeight = sizeMapHeight;
+        this.sizeMapWeight = sizeMapWeight;
+        CoordinateService coordinateService = new CoordinateService(sizeMapHeight, sizeMapWeight);
         coordinates = coordinateService.getListCoordinates();
-        for(Coordinate coordinate : coordinates){
-            entityMap.put(coordinate,new Place());
+        for (Coordinate coordinate : coordinates) {
+            entityMap.put(coordinate, new Place());
         }
+    }
+
+    public Integer getSizeMapHeight() {
+        return sizeMapHeight;
+    }
+
+    public Integer getSizeMapWeight() {
+        return sizeMapWeight;
     }
 
     public List<Coordinate> getCoordinateWolfsMap() {
@@ -28,9 +41,6 @@ public class MapBoard {
     }
 
 
-
-
-
     public List<Entity> getEntityList() {
         List<Entity> entitylist = new ArrayList<>();
         entitylist.addAll(entityMap.values());
@@ -40,18 +50,35 @@ public class MapBoard {
 
     public Coordinate getCoordinateWolf() {
         Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null
-        for (Coordinate coordinateCurrent : entityMap.keySet()){
-            if(entityMap.get(coordinateCurrent) instanceof Wolf) {
+        for (Coordinate coordinateCurrent : entityMap.keySet()) {
+            if (entityMap.get(coordinateCurrent) instanceof Wolf) {
                 coordinate = coordinateCurrent;
             }
         }
         return coordinate;
     }
 
+    public Coordinate getCoordinateByXY(int x, int y) {
+        Coordinate resultCoordinate = new Coordinate(x,y);
+        for (Coordinate coordinate : entityMap.keySet()) {
+            if (coordinate.getX() == x && coordinate.getY() == y) {
+                resultCoordinate = coordinate;
+                break;
+            }
+        }
+        return resultCoordinate;
+    }
+
+
+    public Entity getEntityByCoordinate(Coordinate coordinate) {
+        return entityMap.get(coordinate);
+    }
+
+
     public Wolf getWolf(Coordinate currentCoordinateWolf) {
         Wolf wolf = null; // TODO: 03.09.2024 не возвращай null
-        for (Entity coordinateCurrent : entityMap.values()){
-            if(coordinateCurrent instanceof Wolf) {
+        for (Entity coordinateCurrent : entityMap.values()) {
+            if (coordinateCurrent instanceof Wolf) {
                 wolf = (Wolf) coordinateCurrent;
             }
         }
@@ -59,9 +86,9 @@ public class MapBoard {
     }
 
     public Hare getHare(Coordinate currentCoordinate) {
-       Hare hare = null; // TODO: 03.09.2024 не возвращай null
-        for (Entity coordinateCurrent : entityMap.values()){
-            if(coordinateCurrent instanceof Hare) {
+        Hare hare = null; // TODO: 03.09.2024 не возвращай null
+        for (Entity coordinateCurrent : entityMap.values()) {
+            if (coordinateCurrent instanceof Hare) {
                 hare = (Hare) coordinateCurrent;
             }
         }
@@ -69,11 +96,10 @@ public class MapBoard {
     }
 
 
-
     public Coordinate getFreeCoordinate() {
         Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null 
-        for (Coordinate coordinateCurrent : entityMap.keySet()){
-            if(entityMap.get(coordinateCurrent) instanceof Place) {
+        for (Coordinate coordinateCurrent : entityMap.keySet()) {
+            if (entityMap.get(coordinateCurrent) instanceof Place) {
                 coordinate = coordinateCurrent;
             }
         }
@@ -81,12 +107,12 @@ public class MapBoard {
     }
 
 
-
     public void addEntityMap(Entity entity, CoordinateService coordinateService) {
         Coordinate coordinate = getFreeCoordinate();
         entityMap.put(coordinate, entity);
     }
-    public void addEntityMap(Coordinate coordinateNewPosition,Entity entity) {
+
+    public void addEntityMap(Coordinate coordinateNewPosition, Entity entity) {
         entityMap.put(coordinateNewPosition, entity);
     }
 
@@ -103,8 +129,8 @@ public class MapBoard {
         return entityMap.get(coordinateEntity);
     }
 
-    public boolean isLocatedHare(Coordinate coordinate){
-           return entityMap.get(coordinate).getClass().getSimpleName().equals(Hare.class.getSimpleName());
+    public boolean isLocatedHare(Coordinate coordinate) {
+        return entityMap.get(coordinate).getClass().getSimpleName().equals(Hare.class.getSimpleName());
     }
 
     public boolean containsMapBoardIsHasRock(Coordinate coordinate) {

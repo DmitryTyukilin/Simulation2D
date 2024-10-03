@@ -46,6 +46,8 @@ public class SearchRoute {
         }
     }
 
+    
+
     public boolean hasEntityIsCoordinateHare(Coordinate coordinate) {
         Entity entity = mapBoard.getEntityMap(coordinate);
         return entity.getClass().getSimpleName().equals(Hare.class.getSimpleName());
