@@ -1,7 +1,9 @@
 package dimant.simulation;
 
 
+import dimant.simulation.entity.*;
 import dimant.simulation.service.CoordinateService;
+import dimant.simulation.service.SearchRoute;
 
 
 import java.util.*;
@@ -24,12 +26,28 @@ public class MapBoard {
         }
     }
 
+    public Map<Coordinate, Entity> getEntityMap() {
+        return entityMap;
+
+    }
+
     public Integer getSizeMapHeight() {
         return sizeMapHeight;
     }
 
     public Integer getSizeMapWeight() {
         return sizeMapWeight;
+    }
+
+    public List<Creature> getCreature(){
+        List<Creature> creaturesList = new ArrayList<>();
+        for(Map.Entry<Coordinate,Entity> entry : entityMap.entrySet()){
+            if(entry.getValue().getClass().getSimpleName().equals(Wolf.class.getSimpleName())|| entry.getValue().getClass().getSimpleName().equals(Hare.class.getSimpleName())){
+                Creature creature = (Creature) entry.getValue();
+                creaturesList.add(creature);
+            }
+        }
+        return creaturesList;
     }
 
     public List<Coordinate> getCoordinateWolfsMap() {
@@ -41,12 +59,6 @@ public class MapBoard {
     }
 
 
-    public List<Entity> getEntityList() {
-        List<Entity> entitylist = new ArrayList<>();
-        entitylist.addAll(entityMap.values());
-        return entitylist;
-    }
-
 
     public Coordinate getCoordinateWolf() {
         Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null
@@ -57,6 +69,45 @@ public class MapBoard {
         }
         return coordinate;
     }
+
+    public Coordinate getCoordinateHare() {
+        Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null
+        for (Coordinate coordinateCurrent : entityMap.keySet()) {
+            if (entityMap.get(coordinateCurrent) instanceof Hare) {
+                coordinate = coordinateCurrent;
+            }
+        }
+        return coordinate;
+    }
+
+    public List<Coordinate> getCoordinateList(){
+        List<Coordinate> list = new ArrayList<>();
+        for(Coordinate coordinate : entityMap.keySet()){
+            list.add(coordinate);
+        }
+        return list;
+    }
+
+    public List<Entity> getEntityList(){
+        List<Entity> list = new ArrayList<>();
+        for(Entity entity : entityMap.values()){
+            list.add(entity);
+        }
+        return list;
+    }
+
+
+
+    public Coordinate getCreatureCoordinate(Creature creature) {
+//        Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null
+        for (Map.Entry<Coordinate, ? extends Entity> entries : entityMap.entrySet()) {
+             if (entries.getValue().equals(creature)){
+                 return entries.getKey();
+             }
+        }
+        return null;
+    }
+
 
     public Coordinate getCoordinateByXY(int x, int y) {
         Coordinate resultCoordinate = new Coordinate(x,y);
@@ -70,10 +121,15 @@ public class MapBoard {
     }
 
 
+
     public Entity getEntityByCoordinate(Coordinate coordinate) {
         return entityMap.get(coordinate);
     }
 
+
+    public Entity getEntityMap(Coordinate coordinateEntity) {
+        return entityMap.get(coordinateEntity);
+    }
 
     public Wolf getWolf(Coordinate currentCoordinateWolf) {
         Wolf wolf = null; // TODO: 03.09.2024 не возвращай null
@@ -97,7 +153,7 @@ public class MapBoard {
 
 
     public Coordinate getFreeCoordinate() {
-        Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null 
+        Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null
         for (Coordinate coordinateCurrent : entityMap.keySet()) {
             if (entityMap.get(coordinateCurrent) instanceof Place) {
                 coordinate = coordinateCurrent;
@@ -124,10 +180,6 @@ public class MapBoard {
         }
     }
 
-
-    public Entity getEntityMap(Coordinate coordinateEntity) {
-        return entityMap.get(coordinateEntity);
-    }
 
     public boolean isLocatedHare(Coordinate coordinate) {
         return entityMap.get(coordinate).getClass().getSimpleName().equals(Hare.class.getSimpleName());

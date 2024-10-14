@@ -1,12 +1,9 @@
 package dimant.simulation.service;
 
 import dimant.simulation.Coordinate;
-import dimant.simulation.Entity;
-import dimant.simulation.EntityEnum;
+import dimant.simulation.entity.Entity;
+import dimant.simulation.enums.EntityEnumEmoji;
 import dimant.simulation.MapBoard;
-
-import java.sql.SQLOutput;
-import java.util.List;
 
 public class ConsolePrinter {
     MapBoard mapBoard;
@@ -20,7 +17,7 @@ public class ConsolePrinter {
         for (int x = 1; x < mapBoard.getSizeMapHeight(); x++) {
             int counter = mapBoard.getSizeMapWeight() - 1;
             for (int y = 1; y < mapBoard.getEntityList().size(); y++) {
-                Coordinate coordinate = mapBoard.getCoordinateByXY(x,y);
+                Coordinate coordinate = mapBoard.getCoordinateByXY(x, y);
                 Entity entity = mapBoard.getEntityByCoordinate(coordinate);
                 String emojiEntity = returnEmojiEntity(entity);
                 System.out.print(emojiEntity + " ");
@@ -36,10 +33,11 @@ public class ConsolePrinter {
 
     public String returnEmojiEntity(Entity entity) {
         return switch (entity.getClass().getSimpleName()) {
-            case "Wolf" -> EntityEnum.WOLF.getEmoji();
-            case "Hare" -> EntityEnum.HARE.getEmoji();
-            case "Place" -> EntityEnum.PLACE.getEmoji();
-            case "Rock" -> EntityEnum.ROCK.getEmoji();
+            case "Wolf" -> EntityEnumEmoji.WOLF.getEmoji();
+            case "Hare" -> EntityEnumEmoji.HARE.getEmoji();
+            case "Place" -> EntityEnumEmoji.PLACE.getEmoji();
+            case "Rock" -> EntityEnumEmoji.ROCK.getEmoji();
+            case "Grass" -> EntityEnumEmoji.GRASS.getEmoji();
             default -> "Entity не обнаружено";
         };
     }

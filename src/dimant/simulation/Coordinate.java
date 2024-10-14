@@ -38,6 +38,12 @@ public class Coordinate {
         return Objects.hash(x, y);
     }
 
-
+    @Override
+    public String toString() {
+        return "Coordinate{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
 

@@ -1,6 +1,9 @@
-package dimant.simulation;
+package dimant.simulation.entity;
 
-public class Wolf extends Entity{
+import dimant.simulation.entity.Creature;
+import dimant.simulation.entity.Hare;
+
+public class Wolf extends Creature {
     private Integer energy;
     private final String name;
 
@@ -15,9 +18,7 @@ public class Wolf extends Entity{
                 "name='" + name + '\'' +
                 '}';
     }
-    public String getName() {
-        return name;
-    }
+
     public boolean canMove(){
         boolean haveEnergy = true;
         if (energy <= 0) {

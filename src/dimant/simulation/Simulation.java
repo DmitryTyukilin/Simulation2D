@@ -1,8 +1,7 @@
 package dimant.simulation;
 
-import dimant.simulation.service.ConsolePrinter;
-import dimant.simulation.service.CoordinateService;
-import dimant.simulation.service.EntityService;
+import dimant.simulation.entity.*;
+import dimant.simulation.service.*;
 
 
 import java.util.*;
@@ -10,56 +9,45 @@ import java.util.List;
 
 public class Simulation {
     public static void main(String[] args) {
-        Wolf bim = new Wolf("bim");
-        Wolf reks = new Wolf("reks");
-        Wolf bony = new Wolf("bony");
-        Hare ger = new Hare("pert",10);
+        Wolf wolf = new Wolf("wolf");
+        Wolf wolf2 = new Wolf("wolf2");
+        Hare hare = new Hare("hare", 10);
         Entity rock = new Rock();
         Entity rock2 = new Rock();
         Entity rock3 = new Rock();
         Entity rock4 = new Rock();
+        Entity grass = new Grass();
+        Entity grass2 = new Grass();
 
-        List<Wolf> wolfsList = Arrays.asList(bim, reks, bony);
 
 
-        MapBoard mapBoard = new MapBoard(5,5);
+        MapBoard mapBoard = new MapBoard(5, 5);
         ConsolePrinter printer = new ConsolePrinter(mapBoard);
 
         mapBoard.addEntityMapByCoordinate(rock, 1, 1);
         mapBoard.addEntityMapByCoordinate(rock2, 2, 2);
         mapBoard.addEntityMapByCoordinate(rock3, 3, 2);
         mapBoard.addEntityMapByCoordinate(rock4, 1, 4);
-        mapBoard.addEntityMapByCoordinate(bony, 3, 1);
-        mapBoard.addEntityMapByCoordinate(ger, 1, 3);
+        mapBoard.addEntityMapByCoordinate(wolf, 3, 1);
+        mapBoard.addEntityMapByCoordinate(hare, 3, 2);
+//        mapBoard.addEntityMapByCoordinate(grass, 3, 3);
+//        mapBoard.addEntityMapByCoordinate(grass2, 4, 4);
 
 
-        System.out.println();
-
-
-       // получаю текущую координату волка
-        //запускается поиск пути до тровоядного
-        printer.printMap();
+        SearchRoute searchRoute = new SearchRoute(mapBoard);
+        ScannerType scannerType = new ScannerType(mapBoard);
         EntityService entityService = new EntityService(mapBoard);
-        entityService.makeMoveWolf();
-        printer.printMap();
-        entityService.makeMoveWolf();
-        printer.printMap();
-        entityService.makeMoveWolf();
-        printer.printMap();
-        entityService.makeMoveWolf();
-        printer.printMap();
-        entityService.makeMoveWolf();
-        printer.printMap();
-        entityService.makeMoveWolf();
-        printer.printMap();
-        entityService.makeMoveWolf();
-        printer.printMap();
-        System.out.println();
+        Navigator navigator = new Navigator(searchRoute,scannerType,entityService);
+        hare.setNavigator(navigator);
+        hare.makeMove();
 
 
+
+        printer.printMap();
+
+
+        }
     }
 
-
-}
 
 

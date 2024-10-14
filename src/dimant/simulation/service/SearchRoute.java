@@ -1,11 +1,11 @@
 package dimant.simulation.service;
 
 import dimant.simulation.*;
+import dimant.simulation.entity.*;
 
-import java.nio.charset.CoderResult;
 import java.util.*;
 
-public class SearchRoute {
+public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
 
     private MapBoard mapBoard;
     private Queue<ParentChildCoordinate> parentChildCoordinates = new LinkedList<>();
@@ -21,8 +21,37 @@ public class SearchRoute {
         this.isPathFound = false;
     }
 
+    public Coordinate getNextCoordinate(Coordinate currentCoordinate) {
+        searchHare(currentCoordinate);
+        Coordinate result;
+        Coordinate validateCoordinate = getValidateCoordinate();
+        if (!validateCoordinate.equals(new Coordinate(1, 1))) {
+            result = validateCoordinate;
+        } else {
+            result = currentCoordinate;
+        }
+        resetValueFields();
+        return result;
+    }
 
-    public void searchHare(Coordinate coordinateWolf) {
+    private Coordinate getValidateCoordinate() {
+        Coordinate validateCoordinate = new Coordinate(1, 1);
+        if (resultCoordinates.size() != 0) {
+            validateCoordinate = resultCoordinates.get(resultCoordinates.size() - 1);
+        }
+        return validateCoordinate;
+    }
+
+    private void resetValueFields() {
+        parentChildCoordinates = new LinkedList<>();
+        resultCoordinates = new LinkedList<>();
+        savePath = new ArrayList<>();
+        checkCoordinates = new LinkedList<>();
+        viewedCoordinates = new LinkedList<>();
+        isPathFound = false;
+    }
+
+    private void searchHare(Coordinate coordinateWolf) {
         ParentChildCoordinate currentCoordinate = new ParentChildCoordinate(null, coordinateWolf);
         ParentChildCoordinate target = new ParentChildCoordinate(null, coordinateWolf);
         checkCoordinates.add(currentCoordinate);
@@ -34,7 +63,7 @@ public class SearchRoute {
                 isPathFound = true;
                 target = viewCoordinate;
                 break;
-            } else if (!isAccessToMove(viewCoordinate) && !hasCoordinateInSavePatch(viewCoordinate) ) {
+            } else if (!isAccessToMove(viewCoordinate) && !hasCoordinateInSavePatch(viewCoordinate)) {
                 savePath.add(viewCoordinate);
                 checkCoordinates.addAll(getFreeCoordinatesAboutCurrent(viewCoordinate.children));
             }
@@ -46,19 +75,52 @@ public class SearchRoute {
         }
     }
 
-    
+    private void searchTarget(Coordinate coordinateEntity, Entity targetEat) {
+        ParentChildCoordinate currentCoordinate = new ParentChildCoordinate(null, coordinateEntity);
+        ParentChildCoordinate target = new ParentChildCoordinate(null, coordinateEntity);
+        checkCoordinates.add(currentCoordinate);
+        while (!checkCoordinates.isEmpty()) {
+            ParentChildCoordinate viewCoordinate = checkCoordinates.remove();
+            if (hasEntityIsCoordinateTargetEat(viewCoordinate.getChildren(), targetEat)) {
+                savePath.add(viewCoordinate);
+                System.out.println("цель найдена");
+                isPathFound = true;
+                target = viewCoordinate;
+                break;
+            } else if (!isAccessToMove(viewCoordinate) && !hasCoordinateInSavePatch(viewCoordinate)) {
+                savePath.add(viewCoordinate);
+                checkCoordinates.addAll(getFreeCoordinatesAboutCurrent(viewCoordinate.children));
+            }
+        }
+        if (!isPathFound) {
+            System.out.println("пути нет");
+        } else {
+            createSavePath(target);
+        }
+    }
 
-    public boolean hasEntityIsCoordinateHare(Coordinate coordinate) {
+    private boolean hasEntityIsCoordinateTargetEat(Coordinate coordinate, Entity targetEat) {
+        Entity entity = mapBoard.getEntityMap(coordinate);
+        String nameClass = entity.getClass().getSimpleName();
+        boolean result = false;
+        if (targetEat.getClass().getSimpleName().equals(Wolf.class.getSimpleName())) {
+            result = nameClass.equals(Hare.class.getSimpleName());
+        } else if (targetEat.getClass().getSimpleName().equals(Hare.class.getSimpleName())) {
+            result = nameClass.equals(Grass.class.getSimpleName());
+        }
+        return result;
+    }
+
+    private boolean hasEntityIsCoordinateHare(Coordinate coordinate) {
         Entity entity = mapBoard.getEntityMap(coordinate);
         return entity.getClass().getSimpleName().equals(Hare.class.getSimpleName());
     }
 
-    public boolean hasCoordinateInSavePatch(ParentChildCoordinate coordinate) {
+    private boolean hasCoordinateInSavePatch(ParentChildCoordinate coordinate) {
         return savePath.contains(coordinate);
     }
 
-
-    public Queue<ParentChildCoordinate> getFreeCoordinatesAboutCurrent(Coordinate current) {
+    private Queue<ParentChildCoordinate> getFreeCoordinatesAboutCurrent(Coordinate current) {
         int currentX = current.getX();
         int currentY = current.getY();
         int newX = 0;
@@ -77,12 +139,11 @@ public class SearchRoute {
         return resultCoordinates;
     }
 
-    public boolean isAccessToMove(ParentChildCoordinate coordinate) { // место по координате доступно для хода не скала
+    private boolean isAccessToMove(ParentChildCoordinate coordinate) { // место по координате доступно для хода не скала
         return mapBoard.getEntityMap(coordinate.children).getClass().equals(Rock.class);
     }
 
-
-    public void createSavePath(ParentChildCoordinate coordinateTarget) {
+    private void createSavePath(ParentChildCoordinate coordinateTarget) {
         Coordinate currentCoordinateParent = coordinateTarget.parent;
         resultCoordinates.add(coordinateTarget.children);
         for (int i = savePath.size() - 1; i > 0; i--) {
@@ -93,8 +154,7 @@ public class SearchRoute {
         }
     }
 
-
-    public List<Coordinate> getFreeCoordinatesAboutCurrentList(Coordinate current) {
+    private List<Coordinate> getFreeCoordinatesAboutCurrentList(Coordinate current) {
         int currentX = current.getX();
         int currentY = current.getY();
         int newX = 0;
@@ -113,14 +173,13 @@ public class SearchRoute {
         return resultCoordinates;
     }
 
-
-    public Coordinate getNextCoordinate(Coordinate currentCoordinate) {
-        searchHare(currentCoordinate);
+    private Coordinate getNextCoordinateCreature(Coordinate currentCoordinate, Entity entity) {
+        searchTarget(currentCoordinate, entity);
         return resultCoordinates.get(resultCoordinates.size() - 1);
     }
 
 
-    public class ParentChildCoordinate {
+    private class ParentChildCoordinate {
         Coordinate children;
         Coordinate parent;
 
@@ -129,11 +188,11 @@ public class SearchRoute {
             this.children = children;
         }
 
-        public Coordinate getCoordinateParent() {
+        private Coordinate getCoordinateParent() {
             return parent;
         }
 
-        public Coordinate getChildren() {
+        private Coordinate getChildren() {
             return children;
         }
 

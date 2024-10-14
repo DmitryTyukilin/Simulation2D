@@ -1,9 +1,12 @@
 package dimant.simulation.service;
 
-import dimant.simulation.Coordinate;
-import dimant.simulation.MapBoard;
-import dimant.simulation.Place;
-import dimant.simulation.Wolf;
+import dimant.simulation.*;
+import dimant.simulation.entity.Creature;
+import dimant.simulation.entity.Entity;
+import dimant.simulation.entity.Place;
+import dimant.simulation.entity.Wolf;
+
+import java.util.Map;
 
 
 public class EntityService {
@@ -12,20 +15,11 @@ public class EntityService {
     public EntityService(MapBoard mapBoard) {
         this.mapBoard = mapBoard;
     }
-// Определить текущую координату
-    // Построить путь относительно новой координаты
-    // Получить координату для хода из пути
-    // на текущую записать Place
-    // на новую записать волка
-    // проверить сущест вокруг относительно новой записи при возможности атаковать
-    // энергия есть для еще одного хода, да->
-    // получить новую координату
-    // иначе пропустить ход и восстоновить +1 энергии
+
 
     public void makeMoveWolf() {
         Coordinate currentCoordinateWolf = mapBoard.getCoordinateWolf();
-        SearchRoute searchRoute = new SearchRoute(mapBoard);
-        Coordinate newCoordinate = searchRoute.getNextCoordinate(currentCoordinateWolf);
+        Coordinate newCoordinate = getNextCoordinate(currentCoordinateWolf);
         if (mapBoard.isLocatedHare(newCoordinate)) {
             Wolf wolf = mapBoard.getWolf(currentCoordinateWolf);
             wolf.attack(mapBoard.getHare(newCoordinate));
@@ -35,6 +29,23 @@ public class EntityService {
             mapBoard.addEntityMap(newCoordinate, wolf);
         }
     }
+
+    public Coordinate getCoordinateCreature(Creature creature) {
+        for (Map.Entry<Coordinate, Entity> entry : mapBoard.getEntityMap().entrySet()) {
+            String value = entry.getValue().getClass().getName();
+            if (entry.getValue().equals(creature)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public Coordinate getNextCoordinate(Coordinate currentCoordinate) {
+        SearchRoute searchRoute = new SearchRoute(mapBoard);
+        return searchRoute.getNextCoordinate(currentCoordinate);
+
+    }
+
 
     public void vacatePlace(Coordinate currentCoordinate) {
         mapBoard.addEntityMap(currentCoordinate, new Place());

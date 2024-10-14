@@ -1,14 +1,9 @@
 package dimant.simulation.service;
 
 import dimant.simulation.Coordinate;
-import dimant.simulation.MapBoard;
-import dimant.simulation.Place;
-import dimant.simulation.Wolf;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class CoordinateService {
 
