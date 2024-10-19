@@ -1,4 +1,22 @@
 package dimant.simulation.entity;
 
-public class Grass extends Entity {
+import dimant.simulation.intarfaces.Edible;
+
+public class Grass extends Entity implements Edible {
+    private int HP;
+
+    public Grass() {
+        this.HP = 15;
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        HP = HP - damage;
+        System.out.println(HP + "откусан");
+    }
+
+    @Override
+    public Integer repayHealth() {
+        return 1;
+    }
 }

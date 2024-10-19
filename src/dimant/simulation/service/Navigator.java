@@ -24,8 +24,11 @@ makeMove ретёрнит тип для CreatureService, который дела
 
 
     public String getTypeNextStep(Creature creature) {
-        Coordinate currentCreatureCoordinate = entityService.getCoordinateCreature(creature);
-        Coordinate nextCoordinate = searchRoute.getNextCoordinate(currentCreatureCoordinate);
+       Coordinate nextCoordinate = nextCoordinateAboutCurrent(creature);
         return scannerType.getEntityType(nextCoordinate);
+    }
+    public Coordinate nextCoordinateAboutCurrent(Creature creature) {
+        Coordinate currentCreatureCoordinate = entityService.getCoordinateCreature(creature);
+        return searchRoute.getNextCoordinate(currentCreatureCoordinate, creature);
     }
 }

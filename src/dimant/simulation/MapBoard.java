@@ -2,6 +2,7 @@ package dimant.simulation;
 
 
 import dimant.simulation.entity.*;
+import dimant.simulation.intarfaces.Edible;
 import dimant.simulation.service.CoordinateService;
 import dimant.simulation.service.SearchRoute;
 
@@ -131,6 +132,8 @@ public class MapBoard {
         return entityMap.get(coordinateEntity);
     }
 
+
+
     public Wolf getWolf(Coordinate currentCoordinateWolf) {
         Wolf wolf = null; // TODO: 03.09.2024 не возвращай null
         for (Entity coordinateCurrent : entityMap.values()) {
@@ -142,13 +145,21 @@ public class MapBoard {
     }
 
     public Hare getHare(Coordinate currentCoordinate) {
-        Hare hare = null; // TODO: 03.09.2024 не возвращай null
-        for (Entity coordinateCurrent : entityMap.values()) {
-            if (coordinateCurrent instanceof Hare) {
-                hare = (Hare) coordinateCurrent;
+        for (Entity current : entityMap.values()) {
+            if (current instanceof Hare) {
+                return  (Hare) current;
             }
         }
-        return hare;
+        return null;
+    }
+
+    public Grass getGrass(Coordinate currentCoordinate) {
+        for (Entity current : entityMap.values()) {
+            if (current instanceof Grass) {
+                return  (Grass) current;
+            }
+        }
+        return null;
     }
 
 

@@ -1,11 +1,11 @@
 package dimant.simulation.enums;
 
 public enum EntityEnumEmoji {
-    WOLF("🐺"),
-    HARE("🦓"),
-    PLACE("🔳"),
-    ROCK("🗻"),
-    GRASS("🍀");
+    WOLF    ("🐺"),
+    HARE    ("🦓"),
+    PLACE   ("🔳"),
+    ROCK    ("🗻"),
+    GRASS   ("🍀");
 
 
 

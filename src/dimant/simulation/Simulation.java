@@ -3,14 +3,10 @@ package dimant.simulation;
 import dimant.simulation.entity.*;
 import dimant.simulation.service.*;
 
-
-import java.util.*;
-import java.util.List;
-
 public class Simulation {
     public static void main(String[] args) {
-        Wolf wolf = new Wolf("wolf");
-        Wolf wolf2 = new Wolf("wolf2");
+        Wolf wolf = new Wolf("wolf", 15);
+        Wolf wolf2 = new Wolf("wolf2", 15);
         Hare hare = new Hare("hare", 10);
         Entity rock = new Rock();
         Entity rock2 = new Rock();
@@ -28,9 +24,10 @@ public class Simulation {
         mapBoard.addEntityMapByCoordinate(rock2, 2, 2);
         mapBoard.addEntityMapByCoordinate(rock3, 3, 2);
         mapBoard.addEntityMapByCoordinate(rock4, 1, 4);
-        mapBoard.addEntityMapByCoordinate(wolf, 3, 1);
-        mapBoard.addEntityMapByCoordinate(hare, 3, 2);
-//        mapBoard.addEntityMapByCoordinate(grass, 3, 3);
+        mapBoard.addEntityMapByCoordinate(wolf, 3, 3);
+        mapBoard.addEntityMapByCoordinate(hare, 2, 4);
+        mapBoard.addEntityMapByCoordinate(grass, 2, 3);
+        mapBoard.addEntityMapByCoordinate(grass, 2, 1);
 //        mapBoard.addEntityMapByCoordinate(grass2, 4, 4);
 
 
@@ -38,8 +35,23 @@ public class Simulation {
         ScannerType scannerType = new ScannerType(mapBoard);
         EntityService entityService = new EntityService(mapBoard);
         Navigator navigator = new Navigator(searchRoute,scannerType,entityService);
-        hare.setNavigator(navigator);
-        hare.makeMove();
+        CreatureService creatureService = new CreatureService(mapBoard,navigator,entityService);
+        printer.printMap();
+        creatureService.makeMoveAllCreature();
+        System.out.println();
+        printer.printMap();
+        creatureService.makeMoveAllCreature();
+        System.out.println();
+        printer.printMap();
+        creatureService.makeMoveAllCreature();
+        System.out.println();
+        printer.printMap();
+        creatureService.makeMoveAllCreature();
+        System.out.println();
+        printer.printMap();
+        creatureService.makeMoveAllCreature();
+        System.out.println();
+
 
 
 

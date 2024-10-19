@@ -1,22 +1,25 @@
 package dimant.simulation.entity;
 
 
-import dimant.simulation.Coordinate;
-import dimant.simulation.service.Navigator;
+import dimant.simulation.enums.EnumReaction;
+import dimant.simulation.enums.EnumTypeReaction;
+import dimant.simulation.intarfaces.Edible;
 //import dimant.simulation.service.SearchRoute;
 
-public class Creature extends Entity  {
-    private Navigator navigator;
+public abstract class Creature extends Entity implements Edible {
+    private Integer energy;
 
     public Creature() {
     }
 
-    public void setNavigator(Navigator navigator) {
-        this.navigator = navigator;
-    }
+    public abstract EnumReaction makeMove(String typeNextMove);
+    public abstract void attack(Edible edible);
 
-    public void makeMove() {
-        System.out.println(navigator.getTypeNextStep(this));
+    @Override
+    public abstract void takeDamage(int damage);
 
-    }
+    @Override
+    public abstract Integer repayHealth();
+
 }
+
