@@ -2,10 +2,11 @@ package dimant.simulation.service;
 
 import dimant.simulation.*;
 import dimant.simulation.entity.*;
+import dimant.simulation.intarfaces.IHerbivoreTargetSearch;
 
 import java.util.*;
 
-public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
+public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute, IHerbivoreTargetSearch {
 
     private List<Coordinate> resultCoordinates = new LinkedList<>();
     private List<ParentChildCoordinate> savePath = new ArrayList<>();
@@ -21,8 +22,8 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
         this.isPathFound = false;
     }
 
-    public Coordinate getNextCoordinate(Coordinate currentCoordinate, Entity targetEat ) {
-        searchTarget(currentCoordinate, targetEat);
+    public Coordinate getNextCoordinate(Coordinate currentCoordinate, Creature targetEat) {
+        searchPath(currentCoordinate, targetEat);
         Coordinate result;
         Coordinate validateCoordinate = getValidateCoordinate();
         if (!validateCoordinate.equals(new Coordinate(1, 1))) {
@@ -33,6 +34,19 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
         resetValueFields();
         return result;
     }
+
+    private Coordinate getNextCoordinateHerbivoreToTargetEat(Coordinate creature, Coordinate targetEat) {
+        Coordinate result;
+        Coordinate validateCoordinate = getValidateCoordinate();
+        if (!validateCoordinate.equals(new Coordinate(1, 1))) {
+            result = validateCoordinate;
+        } else {
+            result = creature;
+        }
+        resetValueFields();
+        return result;
+    }
+
 
     private Coordinate getValidateCoordinate() {
         Coordinate validateCoordinate = new Coordinate(1, 1);
@@ -52,48 +66,58 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
         isPathFound = false;
     }
 
-    private void searchTarget(Coordinate coordinateCreature, Entity targetEat) {
+    private void searchPath(Coordinate coordinateCreature, Creature creature) {
         ParentChildCoordinate currentCoordinate = new ParentChildCoordinate(null, coordinateCreature);
-        ParentChildCoordinate target = new ParentChildCoordinate(null, coordinateCreature);
+        ParentChildCoordinate targetEat = new ParentChildCoordinate(null, coordinateCreature);
         checkCoordinates.add(currentCoordinate);
         while (!checkCoordinates.isEmpty()) {
             ParentChildCoordinate viewCoordinate = checkCoordinates.remove();
-            if (hasEntityIsCoordinateTargetEat(viewCoordinate.getChildren(), targetEat)) {
+            Coordinate viewCoordinateChildren = viewCoordinate.getChildren();//рассматриваемая координата
+            if (isCoordinateEatForCreature(viewCoordinateChildren, creature)) {
                 savePath.add(viewCoordinate);
                 isPathFound = true;
-                target = viewCoordinate;
+                targetEat = viewCoordinate;
                 break;
-            } else if (!isAccessToMove(viewCoordinate) && !hasCoordinateInSavePatch(viewCoordinate)) {
+            } else if (!hasCoordinateInSavePatch(viewCoordinate)) {
                 savePath.add(viewCoordinate);
                 checkCoordinates.addAll(getFreeCoordinatesAboutCurrent(viewCoordinate.children));
             }
         }
         if (!isPathFound) {
-            System.out.println("пути нет");
+            System.out.println("пути нет" + creature.toString());
         } else {
-            createSavePath(target);
+            createSavePath(targetEat);
         }
     }
 
-    private boolean hasEntityIsCoordinateTargetEat(Coordinate coordinate, Entity targetEat) {
+
+    private boolean isCoordinateEatForCreature(Coordinate coordinate, Creature creature) {
         Entity entity = mapBoard.getEntityMap(coordinate);
         String nameClass = entity.getClass().getSimpleName();
         boolean result = false;
-        if (targetEat.getClass().getSimpleName().equals(Wolf.class.getSimpleName())) {
+        if (creature instanceof Wolf) {
             result = nameClass.equals(Hare.class.getSimpleName());
-        } else if (targetEat.getClass().getSimpleName().equals(Hare.class.getSimpleName())) {
+        } else if (creature instanceof Hare) {
             result = nameClass.equals(Grass.class.getSimpleName());
         }
         return result;
     }
 
-    private boolean isAccessToMove(ParentChildCoordinate coordinate) { // место по координате доступно для хода не скала
-        return mapBoard.getEntityMap(coordinate.children).getClass().equals(Rock.class);
+    private boolean isCoordinateTargetEatForHerbivore(Coordinate targetEatHerbivore, Coordinate viewCoordinate) {
+        return targetEatHerbivore.equals(viewCoordinate);
     }
 
-    private boolean hasCoordinateInSavePatch(ParentChildCoordinate coordinate) {
-        return savePath.contains(coordinate);
+    private boolean hasCoordinateChildrenInSavePath(Coordinate coordinate) {
+        boolean result = false;
+        for (ParentChildCoordinate childCoordinate : savePath) {
+            if (childCoordinate.children.equals(coordinate)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
+
 
     private Queue<ParentChildCoordinate> getFreeCoordinatesAboutCurrent(Coordinate current) {
         int currentX = current.getX();
@@ -106,7 +130,7 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
             newX = currentX + directions[i][0];
             newY = currentY + directions[i][1];
             for (Coordinate coordinate : mapBoard.getCoordinates()) {
-                if (coordinate.getX() == newX && coordinate.getY() == newY && !mapBoard.containsMapBoardIsHasRock(coordinate)) {
+                if (coordinate.getX() == newX && coordinate.getY() == newY && !mapBoard.containsMapBoardIsHasRock(coordinate) && !mapBoard.hasWolfByCoordinate(coordinate)) {
                     resultCoordinates.add(new ParentChildCoordinate(current, coordinate));
                 }
             }
@@ -114,9 +138,9 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
         return resultCoordinates;
     }
 
-    private void createSavePath(ParentChildCoordinate coordinateTarget) {
-        Coordinate currentCoordinateParent = coordinateTarget.parent;
-        resultCoordinates.add(coordinateTarget.children);
+    private void createSavePath(ParentChildCoordinate coordinateTargetChildren) {
+        Coordinate currentCoordinateParent = coordinateTargetChildren.parent;
+        resultCoordinates.add(coordinateTargetChildren.children);
         for (int i = savePath.size() - 1; i > 0; i--) {
             if (savePath.get(i).children.equals(currentCoordinateParent)) {
                 resultCoordinates.add(savePath.get(i).children);
@@ -125,7 +149,66 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
         }
     }
 
+    @Override
+    public Coordinate nextCoordinateToTargetHerbivore(Coordinate creature, Coordinate target) {
+        searchToTargetHerbivore(creature, target);
+        return getNextCoordinateHerbivoreToTargetEat(creature, target);
+    }
+
+    @Override
+    public Coordinate getCoordinateShortestPath(Coordinate currentCoordinate, Creature currentTypeCreature) {
+        return getNextCoordinate(currentCoordinate, currentTypeCreature);
+    }
+
+    @Override
+    public Coordinate getCoordinateTargetAboutHerbivore(Coordinate coordinate, Creature creature) {
+        searchPath(coordinate, creature);
+        Coordinate target = resultCoordinates.get(0);
+        resetValueFields();
+        return target;
+    }
+
+    @Override
+    public boolean hasGrassByTargetCoordinate(Coordinate coordinate) {
+       if (mapBoard.getGrass(coordinate) != null) {
+           return true;
+       } else return false;
+    }
+
+
+    private void searchToTargetHerbivore(Coordinate creature, Coordinate targetEatHerbivore) {
+        ParentChildCoordinate currentCoordinate = new ParentChildCoordinate(null, creature);
+        ParentChildCoordinate targetEat = new ParentChildCoordinate(null, creature);
+        checkCoordinates.add(currentCoordinate);
+        while (!checkCoordinates.isEmpty()) {
+            ParentChildCoordinate viewCoordinate = checkCoordinates.remove();
+            Coordinate viewCoordinateChildren = viewCoordinate.getChildren();//рассматриваемая координата
+            if (isCoordinateTargetEatForHerbivore(targetEatHerbivore, viewCoordinateChildren)) {
+                savePath.add(viewCoordinate);
+                isPathFound = true;
+                targetEat = viewCoordinate;
+                break;
+            } else if (!hasCoordinateInSavePatch(viewCoordinate)) {
+                savePath.add(viewCoordinate);
+                checkCoordinates.addAll(getFreeCoordinatesAboutCurrent(viewCoordinate.children));
+            }
+        }
+        if (!isPathFound) {
+            System.out.println("пути нет" + creature.toString());
+        } else {
+            createSavePath(targetEat);
+        }
+
+    }
+
+
+    private boolean hasCoordinateInSavePatch(ParentChildCoordinate coordinate) {
+        return savePath.contains(coordinate);
+    }
+
     private class ParentChildCoordinate {
+
+
         Coordinate children;
         Coordinate parent;
 
@@ -153,6 +236,8 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute {
         }
     }
 }
+
+
 
 
 

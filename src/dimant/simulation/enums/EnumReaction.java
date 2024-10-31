@@ -5,8 +5,8 @@ public enum EnumReaction {
     STOP("Wolf"),
     ATTACK("Hare"),
     EAT("Grass"),
-    GO_GRASS("Grass"),
-    NULL("Grass");
+    GO_GRASS("Grass");
+
 
 
     private String type;

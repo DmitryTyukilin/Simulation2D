@@ -14,6 +14,7 @@ public class Simulation {
         Entity rock4 = new Rock();
         Entity grass = new Grass();
         Entity grass2 = new Grass();
+        Entity grass3 = new Grass();
 
 
 
@@ -21,21 +22,27 @@ public class Simulation {
         ConsolePrinter printer = new ConsolePrinter(mapBoard);
 
         mapBoard.addEntityMapByCoordinate(rock, 1, 1);
-        mapBoard.addEntityMapByCoordinate(rock2, 2, 2);
-        mapBoard.addEntityMapByCoordinate(rock3, 3, 2);
-        mapBoard.addEntityMapByCoordinate(rock4, 1, 4);
-        mapBoard.addEntityMapByCoordinate(wolf, 3, 3);
-        mapBoard.addEntityMapByCoordinate(hare, 2, 4);
-        mapBoard.addEntityMapByCoordinate(grass, 2, 3);
-        mapBoard.addEntityMapByCoordinate(grass, 2, 1);
+//        mapBoard.addEntityMapByCoordinate(rock2, 2, 2);
+//        mapBoard.addEntityMapByCoordinate(rock3, 3, 2);
+//        mapBoard.addEntityMapByCoordinate(rock4, 1, 4);
+        mapBoard.addEntityMapByCoordinate(wolf, 1, 4);
+        mapBoard.addEntityMapByCoordinate(hare, 2, 1);
+        mapBoard.addEntityMapByCoordinate(grass, 1, 3);
+//        mapBoard.addEntityMapByCoordinate(grass2, 2, 1);
+        mapBoard.addEntityMapByCoordinate(grass3, 4, 4);
 //        mapBoard.addEntityMapByCoordinate(grass2, 4, 4);
 
 
         SearchRoute searchRoute = new SearchRoute(mapBoard);
         ScannerType scannerType = new ScannerType(mapBoard);
         EntityService entityService = new EntityService(mapBoard);
-        Navigator navigator = new Navigator(searchRoute,scannerType,entityService);
+        SearchHerbivoreService searchHerbivoreService = new SearchHerbivoreService(searchRoute);
+        Navigator navigator = new Navigator(searchRoute,scannerType,entityService, searchHerbivoreService);
         CreatureService creatureService = new CreatureService(mapBoard,navigator,entityService);
+
+        printer.printMap();
+        System.out.println();
+        creatureService.makeMoveAllCreature();
         printer.printMap();
         creatureService.makeMoveAllCreature();
         System.out.println();
@@ -51,6 +58,25 @@ public class Simulation {
         printer.printMap();
         creatureService.makeMoveAllCreature();
         System.out.println();
+        printer.printMap();
+        creatureService.makeMoveAllCreature();
+        System.out.println();
+        printer.printMap();
+        creatureService.makeMoveAllCreature();
+        printer.printMap();
+        System.out.println();
+        creatureService.makeMoveAllCreature();
+        printer.printMap();
+        System.out.println();
+        creatureService.makeMoveAllCreature();
+        printer.printMap();
+        mapBoard.addEntityMapByCoordinate(new Place(), 4, 4);
+        System.out.println();
+        creatureService.makeMoveAllCreature();
+        printer.printMap();
+        System.out.println();
+
+
 
 
 

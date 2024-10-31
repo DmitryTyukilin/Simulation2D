@@ -19,8 +19,6 @@ public class EntityService {
     }
 
 
-
-
     public Coordinate getCoordinateCreature(Creature creature) {
         for (Map.Entry<Coordinate, Entity> entry : mapBoard.getEntityMap().entrySet()) {
             String value = entry.getValue().getClass().getName();
@@ -31,24 +29,23 @@ public class EntityService {
         return null;
     }
 
-    public Coordinate getNextCoordinate(Coordinate currentCoordinate, Entity targetEat) {
+    public Coordinate getNextCoordinate(Coordinate currentCoordinate, Creature targetEat) {
         SearchRoute searchRoute = new SearchRoute(mapBoard);
         return searchRoute.getNextCoordinate(currentCoordinate, targetEat);
 
     }
 
-
-    public void vacatePlace(Coordinate currentCoordinate) {
-        mapBoard.addEntityMap(currentCoordinate, new Place());
-    }
     public void saveGrassEntry(Coordinate coordinateGrass) {
         Grass grass = mapBoard.getGrass(coordinateGrass);
         mapGrass.put(coordinateGrass,grass);
     }
+
+
+
     public Grass getGrassMapGrass(Coordinate coordinate){
         return mapGrass.get(coordinate);
     }
-    public boolean hasGrassMapGrass(Coordinate coordinate){
+    public boolean hasGrassByCoordinateInMapGrass(Coordinate coordinate){
         return mapGrass.containsKey(coordinate);
     }
 

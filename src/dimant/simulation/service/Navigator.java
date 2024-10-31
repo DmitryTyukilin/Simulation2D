@@ -3,16 +3,21 @@ package dimant.simulation.service;
 
 import dimant.simulation.Coordinate;
 import dimant.simulation.entity.Creature;
+import dimant.simulation.entity.Hare;
 
 public class Navigator {
     private SearchRoute searchRoute;
     private ScannerType scannerType;
     private EntityService entityService;
+    private SearchHerbivoreService searchHerbivoreService;
+    private Coordinate nextCoordinateCreature;
 
-    public Navigator(SearchRoute searchRoute, ScannerType scannerType, EntityService entityService) {
+    public Navigator(SearchRoute searchRoute, ScannerType scannerType, EntityService entityService, SearchHerbivoreService searchHerbivoreService) {
         this.searchRoute = searchRoute;
         this.scannerType = scannerType;
         this.entityService = entityService;
+        this.searchHerbivoreService = searchHerbivoreService;
+
     }
 
     /*
@@ -24,11 +29,24 @@ makeMove ретёрнит тип для CreatureService, который дела
 
 
     public String getTypeNextStep(Creature creature) {
-       Coordinate nextCoordinate = nextCoordinateAboutCurrent(creature);
-        return scannerType.getEntityType(nextCoordinate);
+        Coordinate result;
+        if (creature instanceof Hare) {
+            Coordinate coordinateHare = entityService.getCoordinateCreature(creature);
+             result = searchHerbivoreService.getNextCoordinateCreature(coordinateHare, creature);
+            nextCoordinateCreature = result;
+        } else {
+            result = nextCoordinateAboutCurrent(creature);
+            nextCoordinateCreature = result;
+        }
+        return scannerType.getEntityType(result);
     }
+
     public Coordinate nextCoordinateAboutCurrent(Creature creature) {
         Coordinate currentCreatureCoordinate = entityService.getCoordinateCreature(creature);
         return searchRoute.getNextCoordinate(currentCreatureCoordinate, creature);
+    }
+
+    public Coordinate getNextCoordinateCreature() {
+        return nextCoordinateCreature;
     }
 }

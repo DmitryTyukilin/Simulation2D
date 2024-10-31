@@ -38,7 +38,7 @@ public class Wolf extends Creature {
             case "Place" -> EnumReaction.GO;
             case "Hare" -> EnumReaction.ATTACK;
             case "Grass" -> EnumReaction.GO_GRASS;
-            default -> EnumReaction.NULL ;
+            default -> EnumReaction.STOP ;
         };
     }
 

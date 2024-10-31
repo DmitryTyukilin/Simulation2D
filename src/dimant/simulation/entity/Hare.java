@@ -18,8 +18,8 @@ public class Hare extends Creature {
     public EnumReaction makeMove(String typeNextMove) {
         return switch(typeNextMove) {
             case "Place" -> EnumReaction.GO;
-            case "Wolf" -> EnumReaction.STOP;
-            default -> EnumReaction.NULL ;
+            case "Grass" -> EnumReaction.EAT;
+            default -> EnumReaction.STOP ;
         };
     }
 
@@ -32,7 +32,7 @@ public class Hare extends Creature {
     @Override
     public void takeDamage(int damage) {
         HP = HP - damage;
-        System.out.println(HP);
+        System.out.println(HP+ "травоядное атаковано");
     }
 
     @Override
