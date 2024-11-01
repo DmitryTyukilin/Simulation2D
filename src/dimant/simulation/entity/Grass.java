@@ -12,8 +12,14 @@ public class Grass extends Entity implements Edible {
     @Override
     public void takeDamage(int damage) {
         HP = HP - damage;
-        System.out.println(HP + " трава откусана");
+        System.out.println(HP + " трава откусана" );
     }
+
+    public int getHP() {
+        return HP;
+    }
+
+
 
     @Override
     public Integer repayHealth() {

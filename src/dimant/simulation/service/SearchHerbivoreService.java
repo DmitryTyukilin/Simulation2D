@@ -14,18 +14,18 @@ public class SearchHerbivoreService {
         this.search = search;
     }
 
-    public Coordinate getNextCoordinateCreature(Coordinate creatureCoordinate, Creature creature) {
-        Coordinate result;
-        if (target != null && search.hasGrassByTargetCoordinate(target)) {
-            result = search.nextCoordinateToTargetHerbivore(creatureCoordinate, target);
-        } else {
-            target = search.getCoordinateTargetAboutHerbivore(creatureCoordinate, creature);
-            result = search.nextCoordinateToTargetHerbivore(creatureCoordinate, target);
-
-        }
-
-        return result;
-    }
+//    public Coordinate getNextCoordinateCreature(Coordinate creatureCoordinate, Creature creature) {
+//        Coordinate result;
+//        if (target != null && search.hasGrassByTargetCoordinate(target)) {
+//            result = search.nextCoordinateToTargetHerbivore(creatureCoordinate, target);
+//        } else {
+//            target = search.getCoordinateTargetAboutHerbivore(creatureCoordinate, creature);
+//            result = search.nextCoordinateToTargetHerbivore(creatureCoordinate, target);
+//
+//        }
+//
+//        return result;
+//    }
 
 
 }

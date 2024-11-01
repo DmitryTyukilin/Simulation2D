@@ -51,6 +51,7 @@ public class MapBoard {
         return creaturesList;
     }
 
+
     public List<Coordinate> getCoordinateWolfsMap() {
         List<Coordinate> coordinates = new ArrayList<>();
         for (Coordinate coordinate : wolfs.keySet()) {
@@ -68,6 +69,19 @@ public class MapBoard {
             }
         }
         return coordinate;
+    }
+   public Coordinate getCoordinateEntity(Entity entity) {
+        for(Map.Entry<Coordinate,Entity> entry : entityMap.entrySet()){
+            if (entry.getValue().equals(entity)){
+                return entry.getKey();
+            }
+        }
+        return new Coordinate(1,1);
+   }
+
+    public void deleteEntity(Entity entity){
+        Coordinate coordinate = getCoordinateEntity(entity);
+        entityMap.put(coordinate,new Place());
     }
 
     public Coordinate getCoordinateHare() {

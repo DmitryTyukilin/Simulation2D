@@ -107,17 +107,6 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute, IH
         return targetEatHerbivore.equals(viewCoordinate);
     }
 
-    private boolean hasCoordinateChildrenInSavePath(Coordinate coordinate) {
-        boolean result = false;
-        for (ParentChildCoordinate childCoordinate : savePath) {
-            if (childCoordinate.children.equals(coordinate)) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
 
     private Queue<ParentChildCoordinate> getFreeCoordinatesAboutCurrent(Coordinate current) {
         int currentX = current.getX();

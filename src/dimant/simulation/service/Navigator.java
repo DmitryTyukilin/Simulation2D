@@ -28,16 +28,23 @@ makeMove ретёрнит тип для CreatureService, который дела
  */
 
 
+//    public String getTypeNextStep(Creature creature) {
+//        Coordinate result;
+//        if (creature instanceof Hare) {
+//            Coordinate coordinateHare = entityService.getCoordinateCreature(creature);
+//             result = searchHerbivoreService.getNextCoordinateCreature(coordinateHare, creature);
+//            nextCoordinateCreature = result;
+//        } else {
+//            result = nextCoordinateAboutCurrent(creature);
+//            nextCoordinateCreature = result;
+//        }
+//        return scannerType.getEntityType(result);
+//    }
+
+
     public String getTypeNextStep(Creature creature) {
-        Coordinate result;
-        if (creature instanceof Hare) {
-            Coordinate coordinateHare = entityService.getCoordinateCreature(creature);
-             result = searchHerbivoreService.getNextCoordinateCreature(coordinateHare, creature);
-            nextCoordinateCreature = result;
-        } else {
-            result = nextCoordinateAboutCurrent(creature);
-            nextCoordinateCreature = result;
-        }
+        Coordinate result = nextCoordinateAboutCurrent(creature);
+        nextCoordinateCreature = result;
         return scannerType.getEntityType(result);
     }
 
