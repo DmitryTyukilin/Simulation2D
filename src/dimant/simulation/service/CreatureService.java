@@ -45,8 +45,6 @@ public class CreatureService {
             case ATTACK -> attackHerbivore(creature); // для wolf когда makeMove вернул Hare
             case EAT -> eatGrass(); // для hare когда makeMove вернул Grass
             case GO_GRASS -> goGrass(creature);
-
-
             default -> System.out.println("Действие не определено" + creature.toString()); // xз чё тут сделать, может остаться на месте
         }
         ;
@@ -89,6 +87,9 @@ public class CreatureService {
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
         Grass grass = mapBoard.getGrass(nextCoordinate);
         entityService.deleteEntityMap(grass);
+        if (entityService.isValueGrassLowOnMapBoard()) {
+            entityService.addGrassMapBoard();
+        }
     }
 
     public void goGrass(Creature creature) {

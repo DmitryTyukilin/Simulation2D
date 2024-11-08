@@ -22,7 +22,7 @@ public class CreatorEntity {
         this.mapBoard = mapBoard;
         this.numberWolf = 3;
         this.numberHare = 4;
-        this.numberGrass = 6;
+        this.numberGrass = 5;
         this.numberRock = 3;
         this.hpMin = 5;
         this.hpMax = 10;

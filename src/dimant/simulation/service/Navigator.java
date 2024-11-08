@@ -9,14 +9,13 @@ public class Navigator {
     private SearchRoute searchRoute;
     private ScannerType scannerType;
     private EntityService entityService;
-    private SearchHerbivoreService searchHerbivoreService;
     private Coordinate nextCoordinateCreature;
 
-    public Navigator(SearchRoute searchRoute, ScannerType scannerType, EntityService entityService, SearchHerbivoreService searchHerbivoreService) {
+    public Navigator(SearchRoute searchRoute, ScannerType scannerType, EntityService entityService) {
         this.searchRoute = searchRoute;
         this.scannerType = scannerType;
         this.entityService = entityService;
-        this.searchHerbivoreService = searchHerbivoreService;
+
 
     }
 

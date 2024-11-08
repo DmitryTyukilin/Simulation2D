@@ -2,11 +2,9 @@ package dimant.simulation.service;
 
 import dimant.simulation.*;
 import dimant.simulation.entity.*;
+import dimant.simulation.utils.RandomIntValue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class EntityService {
@@ -37,23 +35,53 @@ public class EntityService {
 
     public void saveGrassEntry(Coordinate coordinateGrass) {
         Grass grass = mapBoard.getGrass(coordinateGrass);
-        mapGrass.put(coordinateGrass,grass);
+        mapGrass.put(coordinateGrass, grass);
     }
-    public void deleteEntityMap(Entity entity){
+
+    public void deleteEntityMap(Entity entity) {
         mapBoard.deleteEntity(entity);
     }
 
+    public void addGrassMapBoard() {
+        int valueGrass = RandomIntValue.randomIndex(4);
+            while(valueGrass > 0){
+                Coordinate coordinate = mapBoard.getFreeCoordinate();
+                mapBoard.addEntityMap(coordinate, new Grass());
+                valueGrass--;
+            }
+        }
 
 
+    public boolean isValueGrassLowOnMapBoard() {
+        int counter = 0;
+        for (Entity entity : mapBoard.getEntityList()) {
+            if (entity instanceof Grass) {
+                counter++;
+            }
+        }
+        return counter <= 2;
+    }
 
-    public Grass getGrassMapGrass(Coordinate coordinate){
+    public boolean hasHareOnMapBoard() {
+        int counter = 0;
+        for (Entity entity : mapBoard.getEntityList()) {
+            if (entity instanceof Hare) {
+                counter++;
+            }
+        }
+        return counter > 0;
+    }
+
+
+    public Grass getGrassMapGrass(Coordinate coordinate) {
         return mapGrass.get(coordinate);
     }
-    public boolean hasGrassByCoordinateInMapGrass(Coordinate coordinate){
+
+    public boolean hasGrassByCoordinateInMapGrass(Coordinate coordinate) {
         return mapGrass.containsKey(coordinate);
     }
 
     public void recoverGrassByCoordinate(Coordinate coordinate) {
-        mapBoard.addEntityMap(coordinate,mapGrass.get(coordinate));
+        mapBoard.addEntityMap(coordinate, mapGrass.get(coordinate));
     }
 }
