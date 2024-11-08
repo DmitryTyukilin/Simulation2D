@@ -196,8 +196,6 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute, IH
     }
 
     private class ParentChildCoordinate {
-
-
         Coordinate children;
         Coordinate parent;
 
@@ -205,7 +203,6 @@ public class SearchRoute implements dimant.simulation.intarfaces.SearchRoute, IH
             this.parent = parent;
             this.children = children;
         }
-
 
         private Coordinate getChildren() {
             return children;

@@ -27,10 +27,13 @@ public class CreatureService {
         while (creatures.size() > 0) {
             int index = RandomIntValue.randomIndex(creatures.size() - 1);
             Creature creature = creatures.get(index);
-            String typeNextMove = navigator.getTypeNextStep(creature);
-            triggerActiveCreature(creature, typeNextMove);
-            creatures.remove(index);
-
+            if (mapBoard.hasEntityOnMapBoard(creature)) {
+                String typeNextMove = navigator.getTypeNextStep(creature);
+                triggerActiveCreature(creature, typeNextMove);
+                creatures.remove(index);
+            } else {
+                creatures.remove(index);
+            }
         }
     }
 
@@ -40,7 +43,7 @@ public class CreatureService {
         switch (reaction) {
             case GO -> moveCreature(creature);
             case ATTACK -> attackHerbivore(creature); // для wolf когда makeMove вернул Hare
-            case EAT -> eatGrass(creature); // для hare когда makeMove вернул Grass
+            case EAT -> eatGrass(); // для hare когда makeMove вернул Grass
             case GO_GRASS -> goGrass(creature);
 
 
@@ -74,13 +77,18 @@ public class CreatureService {
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
         Hare hare = mapBoard.getHare(nextCoordinate);
         creature.attack(hare);
+        if (isHPHareLow(hare)) {
+            entityService.deleteEntityMap(hare);
+        }
     }
 
-    public void eatGrass(Creature creature) {
+    // TODO: 06.11.2024 Не совсем корректно сюда добавлять проверку на уровень hp и удаления hare с карты. Скорее всего после каждого хода entityService должен производить свою работу по удалению и добавлению сущностей
+
+
+    public void eatGrass() {
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
         Grass grass = mapBoard.getGrass(nextCoordinate);
-        creature.attack(grass);
-        entityService.deleteGrassMap(grass);
+        entityService.deleteEntityMap(grass);
     }
 
     public void goGrass(Creature creature) {
@@ -89,7 +97,10 @@ public class CreatureService {
         entityService.saveGrassEntry(nextCoordinate);
         mapBoard.addEntityMap(nextCoordinate, creature);
         mapBoard.addEntityMap(currentCoordinate, new Place());
+    }
 
+    private boolean isHPHareLow(Hare hare) {
+        return hare.getHP() <= 0;
     }
 
 

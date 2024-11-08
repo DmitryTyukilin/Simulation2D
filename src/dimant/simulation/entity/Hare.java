@@ -4,12 +4,11 @@ import dimant.simulation.enums.EnumReaction;
 import dimant.simulation.intarfaces.Edible;
 
 public class Hare extends Creature {
-    private String name;
+
     private int HP;
     private final static int DAMAGE = 2;
 
-    public Hare(String name, int HP) {
-        this.name = name;
+    public Hare(int HP) {
         this.HP = HP;
     }
 
@@ -21,6 +20,14 @@ public class Hare extends Creature {
             case "Grass" -> EnumReaction.EAT;
             default -> EnumReaction.STOP ;
         };
+    }
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
     }
 
     @Override
@@ -40,10 +47,4 @@ public class Hare extends Creature {
         return HP - 1;
     }
 
-    @Override
-    public String toString() {
-        return "Herbivore{" +
-                "name='" + name + '\'' +
-                '}';
-    }
 }

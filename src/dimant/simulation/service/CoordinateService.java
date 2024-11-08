@@ -1,12 +1,14 @@
 package dimant.simulation.service;
 
 import dimant.simulation.Coordinate;
+import dimant.simulation.intarfaces.IMap;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CoordinateService {
 
+    IMap mapBoard;
     private List<Coordinate> coordinates = new ArrayList<>();
 
     public CoordinateService(int sizeX, int sizeY) {
@@ -18,9 +20,12 @@ public class CoordinateService {
     }
 
 
+
     public List<Coordinate> getListCoordinates() {
         return coordinates;
     }
+
+
 
 
 

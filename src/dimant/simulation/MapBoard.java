@@ -3,13 +3,14 @@ package dimant.simulation;
 
 import dimant.simulation.entity.*;
 import dimant.simulation.intarfaces.Edible;
+import dimant.simulation.intarfaces.IMap;
 import dimant.simulation.service.CoordinateService;
 import dimant.simulation.service.SearchRoute;
 
 
 import java.util.*;
 
-public class MapBoard {
+public class MapBoard implements IMap {
     private List<Coordinate> coordinates;
     private Map<Coordinate, Wolf> wolfs = new HashMap<>();
     private Map<Coordinate, Entity> entityMap = new HashMap<>();
@@ -70,18 +71,19 @@ public class MapBoard {
         }
         return coordinate;
     }
-   public Coordinate getCoordinateEntity(Entity entity) {
-        for(Map.Entry<Coordinate,Entity> entry : entityMap.entrySet()){
-            if (entry.getValue().equals(entity)){
+
+    public Coordinate getCoordinateEntity(Entity entity) {
+        for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
+            if (entry.getValue().equals(entity)) {
                 return entry.getKey();
             }
         }
-        return new Coordinate(1,1);
-   }
+        return new Coordinate(1, 1);
+    }
 
-    public void deleteEntity(Entity entity){
+    public void deleteEntity(Entity entity) {
         Coordinate coordinate = getCoordinateEntity(entity);
-        entityMap.put(coordinate,new Place());
+        entityMap.put(coordinate, new Place());
     }
 
     public Coordinate getCoordinateHare() {
@@ -134,6 +136,8 @@ public class MapBoard {
     }
 
 
+
+
     public Entity getEntityByCoordinate(Coordinate coordinate) {
         return entityMap.get(coordinate);
     }
@@ -181,6 +185,17 @@ public class MapBoard {
         return coordinate;
     }
 
+    public List <Coordinate> getFreeListCoordinates() {
+        List<Coordinate> coordinatesFreePlace = new ArrayList<>();
+        for (Map.Entry<Coordinate,Entity> entry : entityMap.entrySet()) {
+            if (entry.getValue() instanceof Place) {
+                Coordinate coordinatePlace = entry.getKey();
+                coordinatesFreePlace.add(coordinatePlace);
+            }
+        }
+        return coordinatesFreePlace;
+    }
+
 
     public void addEntityMap(Entity entity, CoordinateService coordinateService) {
         Coordinate coordinate = getFreeCoordinate();
@@ -190,6 +205,9 @@ public class MapBoard {
     public void addEntityMap(Coordinate coordinateNewPosition, Entity entity) {
         entityMap.put(coordinateNewPosition, entity);
     }
+
+
+
 
     public void addEntityMapByCoordinate(Entity entity, int rowX, int colY) {
         for (Coordinate coordinate : coordinates) {
@@ -204,6 +222,10 @@ public class MapBoard {
         return entityMap.get(coordinate).getClass().getSimpleName().equals(Hare.class.getSimpleName());
     }
 
+    public boolean hasEntityOnMapBoard(Entity entity){
+        return entityMap.containsValue(entity);
+    }
+
     public boolean isHare(Creature creature) {
         return creature instanceof Hare;
     }
@@ -215,6 +237,7 @@ public class MapBoard {
         }
         return result;
     }
+
     public boolean hasWolfByCoordinate(Coordinate coordinate) {
         boolean result = false;
         if (entityMap.get(coordinate) != null) {
@@ -222,7 +245,6 @@ public class MapBoard {
         }
         return result;
     }
-
 
 
     public List<Coordinate> getCoordinates() {

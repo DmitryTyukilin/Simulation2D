@@ -39,11 +39,10 @@ public class EntityService {
         Grass grass = mapBoard.getGrass(coordinateGrass);
         mapGrass.put(coordinateGrass,grass);
     }
-    public void deleteGrassMap(Grass grass){
-        if(grass.getHP() <= 0) {
-            mapBoard.deleteEntity(grass);
-        }
+    public void deleteEntityMap(Entity entity){
+        mapBoard.deleteEntity(entity);
     }
+
 
 
 
