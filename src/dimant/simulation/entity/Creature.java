@@ -18,8 +18,7 @@ public abstract class Creature extends Entity implements Edible {
     @Override
     public abstract void takeDamage(int damage);
 
-    @Override
-    public abstract Integer repayHealth();
+
 
 }
 

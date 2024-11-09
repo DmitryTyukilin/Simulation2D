@@ -3,18 +3,13 @@ package dimant.simulation.service;
 import dimant.simulation.Coordinate;
 import dimant.simulation.MapBoard;
 import dimant.simulation.entity.*;
-
-import dimant.simulation.intarfaces.IRadar;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class ScannerType {
-    private MapBoard mapBoard;
-    private List<Entity> entities = new ArrayList<>();
-    Map<Coordinate, Entity> entityMap = new HashMap<>();
+    private final MapBoard mapBoard;
+    private final List<Entity> entities;
+
 
     public ScannerType(MapBoard mapBoard) {
         this.mapBoard = mapBoard;

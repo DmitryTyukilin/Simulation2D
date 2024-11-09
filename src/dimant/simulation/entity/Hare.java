@@ -26,14 +26,9 @@ public class Hare extends Creature {
         return HP;
     }
 
-    public void setHP(int HP) {
-        this.HP = HP;
-    }
-
     @Override
     public void attack(Edible edible) {
         edible.takeDamage(DAMAGE);
-        HP = HP + edible.repayHealth();
     }
 
     @Override
@@ -42,9 +37,5 @@ public class Hare extends Creature {
         System.out.println(HP+ "травоядное атаковано");
     }
 
-    @Override
-    public Integer repayHealth() {
-        return HP - 1;
-    }
 
 }

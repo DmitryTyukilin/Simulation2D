@@ -10,7 +10,7 @@ import dimant.simulation.service.SearchRoute;
 
 import java.util.*;
 
-public class MapBoard implements IMap {
+public final class MapBoard implements IMap {
     private List<Coordinate> coordinates;
     private Map<Coordinate, Wolf> wolfs = new HashMap<>();
     private Map<Coordinate, Entity> entityMap = new HashMap<>();

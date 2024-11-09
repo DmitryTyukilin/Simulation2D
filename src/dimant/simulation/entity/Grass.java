@@ -1,25 +1,14 @@
 package dimant.simulation.entity;
 
-import dimant.simulation.intarfaces.Edible;
 
-public class Grass extends Entity implements Edible {
+
+public class Grass extends Entity {
 
 
     public Grass() {
 
     }
 
-    @Override
-    public void takeDamage(int damage) {
-
-    }
 
 
-
-
-
-    @Override
-    public Integer repayHealth() {
-        return 1;
-    }
 }

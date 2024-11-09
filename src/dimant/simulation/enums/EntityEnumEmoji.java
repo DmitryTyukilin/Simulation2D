@@ -9,7 +9,7 @@ public enum EntityEnumEmoji {
 
 
 
-    private String emoji;
+    private final String emoji;
 
     EntityEnumEmoji(String emoji) {
         this.emoji = emoji;

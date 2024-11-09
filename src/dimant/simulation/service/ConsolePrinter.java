@@ -26,7 +26,7 @@ public class ConsolePrinter {
                     break;
                 }
             }
-            System.out.println();
+            System.out.println(" ");
         }
     }
 

@@ -8,8 +8,7 @@ import java.util.List;
 
 public class CoordinateService {
 
-    IMap mapBoard;
-    private List<Coordinate> coordinates = new ArrayList<>();
+    private final List<Coordinate> coordinates = new ArrayList<>();
 
     public CoordinateService(int sizeX, int sizeY) {
         for (int coordinateX = 1; coordinateX < sizeX; coordinateX++) {

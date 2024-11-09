@@ -11,33 +11,26 @@ public class Wolf extends Creature {
         this.HP = HP;
     }
 
-
-
     @Override
     public EnumReaction makeMove(String typeNextMove) {
-        return switch(typeNextMove) {
+        return switch (typeNextMove) {
             case "Place" -> EnumReaction.GO;
             case "Hare" -> EnumReaction.ATTACK;
             case "Grass" -> EnumReaction.GO_GRASS;
-            default -> EnumReaction.STOP ;
+            default -> EnumReaction.STOP;
         };
     }
 
     @Override
     public void attack(Edible edible) {
         edible.takeDamage(DAMAGE);
-        HP = HP + edible.repayHealth();
     }
 
     @Override
     public void takeDamage(int damage) {
-
-    }
-
-    @Override
-    public Integer repayHealth() {
-        return HP - 2;
     }
 }
+
+
 
 

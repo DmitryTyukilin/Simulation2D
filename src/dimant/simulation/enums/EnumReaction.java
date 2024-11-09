@@ -9,7 +9,7 @@ public enum EnumReaction {
 
 
 
-    private String type;
+    private final String type;
 
     EnumReaction(String type) {
         this.type = type;
