@@ -68,7 +68,7 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
             }
         }
         if (!isPathFound) {
-            System.out.println("пути нет" + creature.toString());
+            System.out.print("");
         } else {
             createSavePath(targetEat);
         }

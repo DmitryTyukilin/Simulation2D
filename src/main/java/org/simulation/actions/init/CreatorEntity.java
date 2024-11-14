@@ -25,9 +25,9 @@ public class CreatorEntity {
         this.numberWolf = 3;
         this.numberHare = 4;
         this.numberGrass = 5;
-        this.numberRock = 3;
-        this.hpMin = 5;
-        this.hpMax = 10;
+        this.numberRock = 5;
+        this.hpMin = 10;
+        this.hpMax = 15;
     }
 
     public void addEntityMap() {

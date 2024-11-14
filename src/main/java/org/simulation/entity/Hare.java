@@ -35,7 +35,6 @@ public class Hare extends Creature {
     @Override
     public void takeDamage(int damage) {
         HP = HP - damage;
-        System.out.println(HP+ "травоядное атаковано");
     }
 
 

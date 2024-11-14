@@ -87,9 +87,6 @@ public final class MapBoard implements IMap {
         return resultCoordinate;
     }
 
-
-
-
     public Entity getEntityByCoordinate(Coordinate coordinate) {
         return entityMap.get(coordinate);
     }
@@ -134,7 +131,6 @@ public final class MapBoard implements IMap {
         }
         return coordinatesFreePlace;
     }
-
 
     public void addEntityMap(Coordinate coordinateNewPosition, Entity entity) {
         entityMap.put(coordinateNewPosition, entity);

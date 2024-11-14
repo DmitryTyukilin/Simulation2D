@@ -39,13 +39,12 @@ public class CreatureService {
 
     public void triggerActiveCreature(Creature creature, String typeNextMove) {
         EnumReaction reaction = creature.makeMove(typeNextMove);
-        System.out.println("сходил " + creature.toString());
         switch (reaction) {
             case GO -> moveCreature(creature);
             case ATTACK -> attackHerbivore(creature);
             case EAT -> eatGrass();
             case GO_GRASS -> goGrass(creature);
-            default -> System.out.println("Действие не определено" + creature.toString()); // xз чё тут сделать, может остаться на месте
+            default -> System.out.print("");
         }
     }
 
