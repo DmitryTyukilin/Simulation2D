@@ -22,12 +22,12 @@ public class CreatorEntity {
 
     public CreatorEntity(IMap mapBoard) {
         this.mapBoard = mapBoard;
-        this.numberWolf = 3;
-        this.numberHare = 4;
-        this.numberGrass = 5;
+        this.numberWolf = 1;
+        this.numberHare = 3;
+        this.numberGrass = 20;
         this.numberRock = 5;
-        this.hpMin = 10;
-        this.hpMax = 15;
+        this.hpMin = 2;
+        this.hpMax = 3;
     }
 
     public void addEntityMap() {

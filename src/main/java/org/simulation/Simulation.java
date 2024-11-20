@@ -31,12 +31,14 @@ public class Simulation {
     public void startSimulation() {
         CreatorEntity creatorEntity = new CreatorEntity(mapBoard);
         creatorEntity.addEntityMap();
+        System.out.println("Исходные позиции");
+        printer.printMap();
         try {
             while (entityService.hasHareOnMapBoard()) {
                 creatureService.makeMoveAllCreature();
                 moveCounter.recordMove();
                 printer.printMap();
-                Thread.sleep(1500);
+                Thread.sleep(500);
 
             }
             System.out.println("Симуляция окончена");

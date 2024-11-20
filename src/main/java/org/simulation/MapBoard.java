@@ -41,7 +41,7 @@ public final class MapBoard implements IMap {
     public List<Creature> getCreature() {
         List<Creature> creaturesList = new ArrayList<>();
         for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
-            if (entry.getValue().getClass().getSimpleName().equals(Wolf.class.getSimpleName()) || entry.getValue().getClass().getSimpleName().equals(Hare.class.getSimpleName())) {
+            if (entry.getValue() instanceof  Creature) {
                 Creature creature = (Creature) entry.getValue();
                 creaturesList.add(creature);
             }

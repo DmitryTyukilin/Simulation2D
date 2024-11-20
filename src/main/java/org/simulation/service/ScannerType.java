@@ -21,7 +21,7 @@ public class ScannerType {
         String targetTypeEntity = getEntityByCoordinate(coordinate).getClass().getSimpleName();
         for (Entity entity : entities) {
             String typeEntity = entity.getClass().getSimpleName();
-            if (typeEntity.equals(typeEntity.getClass().getSimpleName())) {
+            if (typeEntity.equals(targetTypeEntity.getClass().getSimpleName())) {
                 targetTypeEntity = typeEntity;
             }
         }

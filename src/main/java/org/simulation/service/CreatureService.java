@@ -4,10 +4,7 @@ package main.java.org.simulation.service;
 
 import main.java.org.simulation.Coordinate;
 import main.java.org.simulation.MapBoard;
-import main.java.org.simulation.entity.Creature;
-import main.java.org.simulation.entity.Grass;
-import main.java.org.simulation.entity.Hare;
-import main.java.org.simulation.entity.Place;
+import main.java.org.simulation.entity.*;
 import main.java.org.simulation.enums.EnumReaction;
 import main.java.org.simulation.utils.RandomIntValue;
 
@@ -49,15 +46,21 @@ public class CreatureService {
     }
 
 
-    public void moveCreature(Creature creature) {
+    private void moveCreature(Creature creature) {
         Coordinate currentCoordinate = mapBoard.getCreatureCoordinate(creature);
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
+        if(entityService.hasGrassMapGrass(currentCoordinate)) {
+            Grass grass = entityService.getGrassMapGrass(currentCoordinate);
+            mapBoard.addEntityMap(currentCoordinate,grass);
+            mapBoard.addEntityMap(nextCoordinate,creature);
+            return;
+        }
         mapBoard.addEntityMap(nextCoordinate, creature);
         mapBoard.addEntityMap(currentCoordinate, new Place());
     }
 
 
-    public void attackHerbivore(Creature creature) {
+    private void attackHerbivore(Creature creature) {
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
         Hare hare = mapBoard.getHare(nextCoordinate);
         if (hare != null) {
@@ -80,6 +83,12 @@ public class CreatureService {
     public void goGrass(Creature creature) {
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
         Coordinate currentCoordinate = mapBoard.getCreatureCoordinate(creature);
+        if(entityService.hasGrassMapGrass(currentCoordinate)) {
+            Grass grass = entityService.getGrassMapGrass(currentCoordinate);
+            mapBoard.addEntityMap(currentCoordinate, grass);
+            mapBoard.addEntityMap(nextCoordinate, creature);
+            return;
+        }
         entityService.saveGrassEntry(nextCoordinate);
         mapBoard.addEntityMap(nextCoordinate, creature);
         mapBoard.addEntityMap(currentCoordinate, new Place());

@@ -32,9 +32,17 @@ public class EntityService {
         return null;
     }
 
+    public Grass getGrassMapGrass(Coordinate coordinate) {
+        return mapGrass.get(coordinate);
+    }
+
     public void saveGrassEntry(Coordinate coordinateGrass) {
         Grass grass = mapBoard.getGrass(coordinateGrass);
         mapGrass.put(coordinateGrass, grass);
+    }
+
+    public boolean hasGrassMapGrass(Coordinate coordinate) {
+        return mapGrass.containsKey(coordinate);
     }
 
     public void deleteEntityMap(Entity entity) {
