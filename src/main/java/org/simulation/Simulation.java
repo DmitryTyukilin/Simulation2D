@@ -7,7 +7,7 @@ import main.java.org.simulation.service.*;
 
 
 public class Simulation {
-    private MapBoard mapBoard;
+    private final MapBoard mapBoard;
     ConsolePrinter printer;
     SearchRoute searchRoute;
     ScannerType scannerType;
@@ -18,7 +18,7 @@ public class Simulation {
 
     public Simulation() {
         this.mapBoard = new MapBoard(8, 8);
-        this.printer = new ConsolePrinter(mapBoard);
+        this.printer = new ConsolePrinter(new DisplayShaper(mapBoard));
         this.searchRoute = new SearchRoute(mapBoard);
         this.scannerType = new ScannerType(mapBoard);
         this.entityService = new EntityService(mapBoard);
