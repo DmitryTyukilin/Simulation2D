@@ -28,6 +28,8 @@ public class ScannerType {
         return targetTypeEntity;
     }
 
+
+
     private Entity getEntityByCoordinate(Coordinate coordinate) {
         return mapBoard.getEntityMap(coordinate);
     }

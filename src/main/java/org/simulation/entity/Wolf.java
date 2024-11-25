@@ -4,6 +4,7 @@ package main.java.org.simulation.entity;
 import main.java.org.simulation.enums.EnumReaction;
 import main.java.org.simulation.intarfaces.Edible;
 
+
 public class Wolf extends Predator {
     private int HP;
     private final static int DAMAGE = 3;
@@ -11,6 +12,9 @@ public class Wolf extends Predator {
     public Wolf(int HP) {
         this.HP = HP;
     }
+
+
+
 
     @Override
     public EnumReaction makeMove(String typeNextMove) {
@@ -22,8 +26,10 @@ public class Wolf extends Predator {
         };
     }
 
+
+
     @Override
-    public void attack(Herbivore edible) {
+    public void attack(Edible edible) {
         edible.takeDamage(DAMAGE);
     }
 

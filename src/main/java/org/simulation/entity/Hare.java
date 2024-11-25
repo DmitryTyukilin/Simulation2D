@@ -2,13 +2,14 @@ package main.java.org.simulation.entity;
 
 
 import main.java.org.simulation.enums.EnumReaction;
-import main.java.org.simulation.intarfaces.Edible;
 
 public class Hare extends Herbivore {
 
     public Hare(int HP) {
         super(HP);
     }
+
+
 
 
     @Override

@@ -3,10 +3,7 @@ import main.java.org.simulation.entity.*;
 import main.java.org.simulation.intarfaces.IMap;
 import main.java.org.simulation.service.CoordinateService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class MapBoard implements IMap {
     private final List<Coordinate> coordinates;
@@ -79,13 +76,16 @@ public final class MapBoard implements IMap {
     public Coordinate getCoordinateByXY(int x, int y) {
         Coordinate resultCoordinate = new Coordinate(x, y);
         for (Coordinate coordinate : entityMap.keySet()) {
-            if (coordinate.getX() == x && coordinate.getY() == y) {
+            if (coordinate.equals(resultCoordinate)) {
                 resultCoordinate = coordinate;
                 break;
             }
         }
         return resultCoordinate;
     }
+
+
+
 
     public Entity getEntityByCoordinate(Coordinate coordinate) {
         return entityMap.get(coordinate);

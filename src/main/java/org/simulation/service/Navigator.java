@@ -16,18 +16,18 @@ public class Navigator {
         this.entityService = entityService;
     }
 
-    public String getTypeNextStep(Creature creature) {
+     String getTypeNextStep(Creature creature) {
         Coordinate result = nextCoordinateAboutCurrent(creature);
         nextCoordinateCreature = result;
         return scannerType.getEntityType(result);
     }
 
-    public Coordinate nextCoordinateAboutCurrent(Creature creature) {
-        Coordinate currentCreatureCoordinate = entityService.getCoordinateCreature(creature);
-        return searchRoute.getNextCoordinate(currentCreatureCoordinate, creature);
-    }
-
     public Coordinate getNextCoordinateCreature() {
         return nextCoordinateCreature;
+    }
+
+    private Coordinate nextCoordinateAboutCurrent(Creature creature) {
+        Coordinate currentCreatureCoordinate = entityService.getCoordinateCreature(creature);
+        return searchRoute.getNextCoordinate(currentCreatureCoordinate, creature);
     }
 }

@@ -16,16 +16,11 @@ public class ConsolePrinter {
     public void printMap() {
 
         for (int x = 1; x < mapBoard.getSizeMapHeight(); x++) {
-            int counter = mapBoard.getSizeMapWeight() - 1;
-            for (int y = 1; y < mapBoard.getEntityList().size(); y++) {
+            for (int y = 1; y < mapBoard.getSizeMapWeight(); y++) {
                 Coordinate coordinate = mapBoard.getCoordinateByXY(x, y);
                 Entity entity = mapBoard.getEntityByCoordinate(coordinate);
                 String emojiEntity = returnEmojiEntity(entity);
                 System.out.print(emojiEntity + " ");
-                counter--;
-                if (counter == 0) {
-                    break;
-                }
             }
             System.out.println(" ");
         }

@@ -1,7 +1,6 @@
 package main.java.org.simulation.service;
 
 
-
 import main.java.org.simulation.Coordinate;
 import main.java.org.simulation.MapBoard;
 import main.java.org.simulation.entity.*;
@@ -28,9 +27,10 @@ public class CreatureService {
             Creature creature = creatures.get(index);
             if (mapBoard.hasEntityOnMapBoard(creature)) {
                 String typeNextMove = navigator.getTypeNextStep(creature);
+                creature.makeMove(typeNextMove);
                 triggerActiveCreature(creature, typeNextMove);
             }
-            creatures.remove(index);
+            creatures.remove(creature);
         }
     }
 
@@ -38,7 +38,7 @@ public class CreatureService {
         EnumReaction reaction = creature.makeMove(typeNextMove);
         switch (reaction) {
             case GO -> moveCreature(creature);
-            case ATTACK -> attackHerbivore(creature);
+            case ATTACK -> attackHerbivore((Wolf) creature); // TODO: 25.11.2024 костыль 
             case EAT -> eatGrass();
             case GO_GRASS -> goGrass(creature);
             default -> System.out.print("");
@@ -49,10 +49,10 @@ public class CreatureService {
     private void moveCreature(Creature creature) {
         Coordinate currentCoordinate = mapBoard.getCreatureCoordinate(creature);
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
-        if(entityService.hasGrassMapGrass(currentCoordinate)) {
+        if (entityService.hasGrassMapGrass(currentCoordinate)) {
             Grass grass = entityService.getGrassMapGrass(currentCoordinate);
-            mapBoard.addEntityMap(currentCoordinate,grass);
-            mapBoard.addEntityMap(nextCoordinate,creature);
+            mapBoard.addEntityMap(currentCoordinate, grass);
+            mapBoard.addEntityMap(nextCoordinate, creature);
             return;
         }
         mapBoard.addEntityMap(nextCoordinate, creature);
@@ -60,11 +60,11 @@ public class CreatureService {
     }
 
 
-    private void attackHerbivore(Creature creature) {
+    private void attackHerbivore(Predator predator) {
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
         Hare hare = mapBoard.getHare(nextCoordinate);
         if (hare != null) {
-            creature.attack(hare);
+            predator.attack(hare);
             if (isHPHareLow(hare)) {
                 entityService.deleteEntityMap(hare);
             }
@@ -83,7 +83,7 @@ public class CreatureService {
     public void goGrass(Creature creature) {
         Coordinate nextCoordinate = navigator.getNextCoordinateCreature();
         Coordinate currentCoordinate = mapBoard.getCreatureCoordinate(creature);
-        if(entityService.hasGrassMapGrass(currentCoordinate)) {
+        if (entityService.hasGrassMapGrass(currentCoordinate)) {
             Grass grass = entityService.getGrassMapGrass(currentCoordinate);
             mapBoard.addEntityMap(currentCoordinate, grass);
             mapBoard.addEntityMap(nextCoordinate, creature);
