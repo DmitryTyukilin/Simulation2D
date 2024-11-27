@@ -1,4 +1,5 @@
 package main.java.org.simulation;
+
 import main.java.org.simulation.entity.*;
 import main.java.org.simulation.intarfaces.IMap;
 import main.java.org.simulation.service.CoordinateService;
@@ -18,14 +19,15 @@ public final class MapBoard implements IMap {
         CoordinateService coordinateService = new CoordinateService(sizeMapHeight, sizeMapWeight);
         coordinates = coordinateService.getListCoordinates();
         for (Coordinate coordinate : coordinates) {
-            entityMap.put(coordinate, new Place());
+            entityMap.put(coordinate, null);
         }
     }
 
-    public Map<Coordinate, Entity> getEntityMap() {
+    private Map<Coordinate, Entity> getEntityMap() {
         return entityMap;
 
     }
+
 
     public Integer getSizeMapHeight() {
         return sizeMapHeight;
@@ -38,7 +40,7 @@ public final class MapBoard implements IMap {
     public List<Creature> getCreature() {
         List<Creature> creaturesList = new ArrayList<>();
         for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
-            if (entry.getValue() instanceof  Creature) {
+            if (entry.getValue() instanceof Creature) {
                 Creature creature = (Creature) entry.getValue();
                 creaturesList.add(creature);
             }
@@ -64,9 +66,9 @@ public final class MapBoard implements IMap {
         return new ArrayList<>(entityMap.values());
     }
 
-    public Coordinate getCreatureCoordinate(Creature creature) {
+    public Coordinate getCoordinateCreature(Creature creature) {
         for (Map.Entry<Coordinate, ? extends Entity> entries : entityMap.entrySet()) {
-            if (entries.getValue().equals(creature)) {
+            if (isEntityByCoordinateNotNull(entries.getKey()) && entries.getValue().equals(creature)) {
                 return entries.getKey();
             }
         }
@@ -85,15 +87,16 @@ public final class MapBoard implements IMap {
     }
 
 
-
+    public boolean isEntityByCoordinateNotNull(Coordinate coordinate) {
+        return entityMap.get(coordinate) != null;
+    }
 
     public Entity getEntityByCoordinate(Coordinate coordinate) {
-        return entityMap.get(coordinate);
+        if (isEntityByCoordinateNotNull(coordinate)) {
+            return entityMap.get(coordinate);
+        } else return new Entity();
     }
 
-    public Entity getEntityMap(Coordinate coordinateEntity) {
-        return entityMap.get(coordinateEntity);
-    }
 
     public Hare getHare(Coordinate coordinate) {
         Entity entity = entityMap.get(coordinate);
@@ -121,10 +124,10 @@ public final class MapBoard implements IMap {
         return coordinate;
     }
 
-    public List <Coordinate> getFreeListCoordinates() {
+    public List<Coordinate> getFreeListCoordinates() {
         List<Coordinate> coordinatesFreePlace = new ArrayList<>();
-        for (Map.Entry<Coordinate,Entity> entry : entityMap.entrySet()) {
-            if (entry.getValue() instanceof Place) {
+        for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
+            if (entry.getValue() == null) {
                 Coordinate coordinatePlace = entry.getKey();
                 coordinatesFreePlace.add(coordinatePlace);
             }
@@ -136,7 +139,7 @@ public final class MapBoard implements IMap {
         entityMap.put(coordinateNewPosition, entity);
     }
 
-    public boolean hasEntityOnMapBoard(Entity entity){
+    public boolean hasEntityOnMapBoard(Entity entity) {
         return entityMap.containsValue(entity);
     }
 

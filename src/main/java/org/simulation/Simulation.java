@@ -10,7 +10,6 @@ public class Simulation {
     private final MapBoard mapBoard;
     ConsolePrinter printer;
     SearchRoute searchRoute;
-    ScannerType scannerType;
     EntityService entityService;
     Navigator navigator;
     CreatureService creatureService;
@@ -20,31 +19,26 @@ public class Simulation {
         this.mapBoard = new MapBoard(8, 8);
         this.printer = new ConsolePrinter(new DisplayShaper(mapBoard));
         this.searchRoute = new SearchRoute(mapBoard);
-        this.scannerType = new ScannerType(mapBoard);
         this.entityService = new EntityService(mapBoard);
-        this.navigator = new Navigator(searchRoute, scannerType, entityService);
+        this.navigator = new Navigator(searchRoute, mapBoard, entityService);
         this.creatureService = new CreatureService(mapBoard, navigator, entityService);
         this.moveCounter = new MoveCounter();
     }
-
 
     public void startSimulation() {
         CreatorEntity creatorEntity = new CreatorEntity(mapBoard);
         creatorEntity.addEntityMap();
         System.out.println("Исходные позиции");
         printer.printMap();
-        try {
+
             while (entityService.hasHareOnMapBoard()) {
                 creatureService.makeMoveAllCreature();
                 moveCounter.recordMove();
                 printer.printMap();
-                Thread.sleep(500);
+
 
             }
             System.out.println("Симуляция окончена");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
 

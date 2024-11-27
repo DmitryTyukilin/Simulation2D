@@ -32,10 +32,9 @@ public class DisplayShaper implements DisplayedInConsole {
         return switch (entity.getClass().getSimpleName()) {
             case "Wolf" -> EntityEnumEmoji.WOLF.getEmoji();
             case "Hare" -> EntityEnumEmoji.HARE.getEmoji();
-            case "Place" -> EntityEnumEmoji.PLACE.getEmoji();
             case "Rock" -> EntityEnumEmoji.ROCK.getEmoji();
             case "Grass" -> EntityEnumEmoji.GRASS.getEmoji();
-            default -> "Entity не обнаружено";
+            default -> EntityEnumEmoji.NULL.getEmoji();
         };
     }
 }

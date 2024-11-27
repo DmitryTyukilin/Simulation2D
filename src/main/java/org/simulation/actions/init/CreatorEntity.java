@@ -33,8 +33,8 @@ public class CreatorEntity {
     public void addEntityMap() {
         List<Entity> entityList = getEntityList();
         for (Entity entity : entityList) {
-            int randomPlaceCreature = random.nextInt(mapBoard.getFreeListCoordinates().size());
             List<Coordinate> freeCoordinates = mapBoard.getFreeListCoordinates();
+            int randomPlaceCreature = random.nextInt(freeCoordinates.size());
             Coordinate freeCoordinateRandom = freeCoordinates.get(randomPlaceCreature);
             mapBoard.addEntityMap(freeCoordinateRandom, entity);
         }

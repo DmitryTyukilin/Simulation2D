@@ -3,7 +3,7 @@ package main.java.org.simulation.enums;
 public enum EntityEnumEmoji {
     WOLF    ("🐺"),
     HARE    ("🦓"),
-    PLACE   ("🔳"),
+    NULL   ("🔳"),
     ROCK    ("🗻"),
     GRASS   ("🍀");
 

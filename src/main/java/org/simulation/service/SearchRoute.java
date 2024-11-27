@@ -75,13 +75,12 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
     }
 
     private boolean isCoordinateEatForCreature(Coordinate coordinate, Creature creature) {
-        Entity entity = mapBoard.getEntityMap(coordinate);
-        String nameClass = entity.getClass().getSimpleName();
+        Entity entity = mapBoard.getEntityByCoordinate(coordinate);
         boolean result = false;
-        if (creature instanceof Wolf) {
-            result = nameClass.equals(Hare.class.getSimpleName());
-        } else if (creature instanceof Hare) {
-            result = nameClass.equals(Grass.class.getSimpleName());
+        if (creature instanceof Predator) {
+            result = entity instanceof Herbivore;
+        } else if (creature instanceof Herbivore) {
+            result = entity instanceof Grass;
         }
         return result;
     }

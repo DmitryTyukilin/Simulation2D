@@ -24,12 +24,7 @@ public class EntityService {
 
 
     public Coordinate getCoordinateCreature(Creature creature) {
-        for (Map.Entry<Coordinate, Entity> entry : mapBoard.getEntityMap().entrySet()) {
-            if (entry.getValue().equals(creature)) {
-                return entry.getKey();
-            }
-        }
-        return null;
+        return mapBoard.getCoordinateCreature(creature);
     }
 
     public Grass getGrassMapGrass(Coordinate coordinate) {
