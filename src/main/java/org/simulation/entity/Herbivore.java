@@ -2,6 +2,8 @@ package main.java.org.simulation.entity;
 
 import main.java.org.simulation.intarfaces.Edible;
 
+import java.util.Objects;
+
 public abstract class Herbivore extends Creature implements Edible {
     protected int HP;
 
@@ -14,5 +16,6 @@ public abstract class Herbivore extends Creature implements Edible {
     public int getHP() {
         return HP;
     }
+
 }
 

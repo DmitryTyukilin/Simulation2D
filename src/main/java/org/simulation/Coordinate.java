@@ -2,7 +2,7 @@ package main.java.org.simulation;
 
 import java.util.Objects;
 
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
     private final Integer x;
     private final Integer y;
 
@@ -41,6 +41,11 @@ public class Coordinate {
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Coordinate o) {
+        return Integer.compare(o.getX(),this.getX());
     }
 }
 

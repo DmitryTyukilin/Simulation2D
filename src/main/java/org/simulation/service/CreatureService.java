@@ -14,34 +14,40 @@ public class CreatureService {
     private final Navigator navigator;
     private final EntityService entityService;
 
+
     public CreatureService(MapBoard mapBoard, Navigator navigator, EntityService entityService) {
         this.mapBoard = mapBoard;
         this.navigator = navigator;
         this.entityService = entityService;
+
     }
 
     public void makeMoveAllCreature() {
         List<Creature> creatures = mapBoard.getCreature();
         while (creatures.size() > 0) {
-            int index = RandomIntValue.randomIndex(creatures.size() - 1);
+            int index = RandomIntValue.randomIndex(0, creatures.size() - 1);
             Creature creature = creatures.get(index);
-            if (mapBoard.hasEntityOnMapBoard(creature)) {
                 String typeNextMove = navigator.getTypeEntityNextStep(creature);
-                creature.makeMove(typeNextMove);
                 triggerActiveCreature(creature, typeNextMove);
-            }
-            creatures.remove(creature);
+                creatures.remove(creature);
+
         }
     }
 
-    public void triggerActiveCreature(Creature creature, String typeNextMove) {
+    private void triggerActiveCreature(Creature creature, String typeNextMove) {
         EnumReaction reaction = creature.makeMove(typeNextMove);
-        switch (reaction) {
-            case GO -> moveCreature(creature);
-            case ATTACK -> attackHerbivore((Wolf) creature); // TODO: 25.11.2024 костыль
-            case EAT -> eatGrass();
-            case GO_GRASS -> goGrass(creature);
-            default -> System.out.print("");
+        if (creature instanceof Predator) {
+            Predator predator = (Predator) creature;
+            if (reaction.equals(EnumReaction.ATTACK)) {
+                attackHerbivore(predator);
+            } else if (reaction.equals(EnumReaction.GO_GRASS)) {
+                goGrass(predator);
+            } else moveCreature(creature);
+        }
+        if (creature instanceof Herbivore) {
+            if (reaction.equals(EnumReaction.EAT)) {
+                eatGrass();
+            } else moveCreature(creature);
         }
     }
 
@@ -56,7 +62,7 @@ public class CreatureService {
             return;
         }
         mapBoard.addEntityMap(nextCoordinate, creature);
-        mapBoard.addEntityMap(currentCoordinate, new Place());
+        mapBoard.addEntityMap(currentCoordinate, null);
     }
 
 
@@ -65,22 +71,22 @@ public class CreatureService {
         Hare hare = mapBoard.getHare(nextCoordinate);
         if (hare != null) {
             predator.attack(hare);
-            if (isHPHareLow(hare)) {
-                entityService.deleteEntityMap(hare);
+            if (isHerbivoreDead(hare)) {
+                mapBoard.deleteEntityMap(hare);
             }
         }
     }
 
-    public void eatGrass() {
+    private void eatGrass() {
         Coordinate nextCoordinate = navigator.getNextCoordinateEntity();
         Grass grass = mapBoard.getGrass(nextCoordinate);
-        entityService.deleteEntityMap(grass);
+        mapBoard.deleteEntityMap(grass);
         if (entityService.isValueGrassLowOnMapBoard()) {
-            entityService.addGrassMapBoard();
+            mapBoard.addGrassMapBoard();
         }
     }
 
-    public void goGrass(Creature creature) {
+    private void goGrass(Creature creature) {
         Coordinate nextCoordinate = navigator.getNextCoordinateEntity();
         Coordinate currentCoordinate = mapBoard.getCoordinateCreature(creature);
         if (entityService.hasGrassMapGrass(currentCoordinate)) {
@@ -91,10 +97,10 @@ public class CreatureService {
         }
         entityService.saveGrassEntry(nextCoordinate);
         mapBoard.addEntityMap(nextCoordinate, creature);
-        mapBoard.addEntityMap(currentCoordinate, new Place());
+        mapBoard.addEntityMap(currentCoordinate, null);
     }
 
-    private boolean isHPHareLow(Hare hare) {
+    private boolean isHerbivoreDead(Herbivore hare) {
         return hare.getHP() <= 0;
     }
 }

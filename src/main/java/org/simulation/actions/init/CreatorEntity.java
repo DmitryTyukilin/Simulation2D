@@ -16,18 +16,18 @@ public class CreatorEntity {
     private final Integer numberHare;
     private final Integer numberGrass;
     private final Integer numberRock;
-    final Integer hpMin;
-    final Integer hpMax;
+    private final Integer hpMin;
+    private final Integer hpMax;
     Random random = new Random();
 
     public CreatorEntity(IMap mapBoard) {
         this.mapBoard = mapBoard;
         this.numberWolf = 1;
-        this.numberHare = 5;
+        this.numberHare = 4;
         this.numberGrass = 3;
         this.numberRock = 5;
-        this.hpMin = 2;
-        this.hpMax = 3;
+        this.hpMin = 1;
+        this.hpMax = 2;
     }
 
     public void addEntityMap() {
@@ -52,8 +52,7 @@ public class CreatorEntity {
     private List<Wolf> createListWolf() {
         List<Wolf> wolfs = new ArrayList<>();
         for (int i = 0; i < numberWolf; i++) {
-            int HP = random.nextInt(hpMin, hpMax);
-            wolfs.add(new Wolf(HP));
+            wolfs.add(new Wolf());
         }
         return wolfs;
     }
@@ -61,7 +60,7 @@ public class CreatorEntity {
     private List<Hare> createListHare() {
         List<Hare> hares = new ArrayList<>();
         for (int i = 0; i < numberHare; i++) {
-            int HP = random.nextInt(hpMin, hpMax);
+            int HP = hpMin + random.nextInt(hpMax);
             hares.add(new Hare(HP));
         }
         return hares;

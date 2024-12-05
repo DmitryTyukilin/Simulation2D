@@ -2,32 +2,27 @@ package main.java.org.simulation;
 
 import main.java.org.simulation.entity.*;
 import main.java.org.simulation.intarfaces.IMap;
-import main.java.org.simulation.service.CoordinateService;
+import main.java.org.simulation.utils.RandomIntValue;
 
 import java.util.*;
 
 public final class MapBoard implements IMap {
-    private final List<Coordinate> coordinates;
     private final Map<Coordinate, Entity> entityMap = new HashMap<>();
     private final Integer sizeMapHeight;
     private final Integer sizeMapWeight;
+    private final List<Grass> grassList = new ArrayList<>();
+    private final List<Herbivore> herbivoresList = new ArrayList<>();
 
 
     public MapBoard(int sizeMapHeight, int sizeMapWeight) {
         this.sizeMapHeight = sizeMapHeight;
         this.sizeMapWeight = sizeMapWeight;
-        CoordinateService coordinateService = new CoordinateService(sizeMapHeight, sizeMapWeight);
-        coordinates = coordinateService.getListCoordinates();
-        for (Coordinate coordinate : coordinates) {
-            entityMap.put(coordinate, null);
+        for (int coordinateX = 1; coordinateX < sizeMapHeight; coordinateX++) {
+            for (int coordinateY = 1; coordinateY < sizeMapWeight; coordinateY++) {
+                entityMap.put(new Coordinate(coordinateX, coordinateY), null);
+            }
         }
     }
-
-    private Map<Coordinate, Entity> getEntityMap() {
-        return entityMap;
-
-    }
-
 
     public Integer getSizeMapHeight() {
         return sizeMapHeight;
@@ -50,7 +45,7 @@ public final class MapBoard implements IMap {
 
     public Coordinate getCoordinateEntity(Entity entity) {
         for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
-            if (entry.getValue().equals(entity)) {
+            if (entry.getValue() != null && entry.getValue().equals(entity)) {
                 return entry.getKey();
             }
         }
@@ -59,26 +54,31 @@ public final class MapBoard implements IMap {
 
     public void deleteEntity(Entity entity) {
         Coordinate coordinate = getCoordinateEntity(entity);
-        entityMap.put(coordinate, new Place());
+        entityMap.put(coordinate, null);
     }
 
     public List<Entity> getEntityList() {
         return new ArrayList<>(entityMap.values());
     }
 
+    /**
+     * @param creature
+     * @return null теоретически не должно быть так как координаты на карте не зануляются в нулл
+     * и всегда сущетсвуют на протяжении всего цикла проекта
+     */
     public Coordinate getCoordinateCreature(Creature creature) {
-        for (Map.Entry<Coordinate, ? extends Entity> entries : entityMap.entrySet()) {
-            if (isEntityByCoordinateNotNull(entries.getKey()) && entries.getValue().equals(creature)) {
-                return entries.getKey();
+        for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
+            if (isEntityByCoordinateNotNull(entry.getKey()) && entry.getValue().equals(creature)) {
+                return entry.getKey();
             }
         }
-        return null;
+        return new Coordinate(1, 1);
     }
 
     public Coordinate getCoordinateByXY(int x, int y) {
         Coordinate resultCoordinate = new Coordinate(x, y);
         for (Coordinate coordinate : entityMap.keySet()) {
-            if (coordinate.equals(resultCoordinate)) {
+            if (coordinate != null && coordinate.equals(resultCoordinate)) {
                 resultCoordinate = coordinate;
                 break;
             }
@@ -115,13 +115,12 @@ public final class MapBoard implements IMap {
     }
 
     public Coordinate getFreeCoordinate() {
-        Coordinate coordinate = null; // TODO: 03.09.2024 не возвращай null
-        for (Coordinate coordinateCurrent : entityMap.keySet()) {
-            if (entityMap.get(coordinateCurrent) instanceof Place) {
-                coordinate = coordinateCurrent;
+        for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
+            if (entry.getValue() == null) {
+                return entry.getKey();
             }
         }
-        return coordinate;
+        return new Coordinate(1, 1);
     }
 
     public List<Coordinate> getFreeListCoordinates() {
@@ -151,17 +150,58 @@ public final class MapBoard implements IMap {
         return result;
     }
 
-    public boolean hasWolfByCoordinate(Coordinate coordinate) {
+    public boolean hasPredatorByCoordinate(Coordinate coordinate) {
         boolean result = false;
         if (entityMap.get(coordinate) != null) {
-            result = entityMap.get(coordinate) instanceof Wolf;
+            result = entityMap.get(coordinate) instanceof Predator;
         }
         return result;
     }
 
+    public List<Coordinate> getListCoordinates() {
+        return new ArrayList<>(entityMap.keySet());
+    }
 
-    public List<Coordinate> getCoordinates() {
-        return coordinates;
+    public boolean hasHerbivoreMapBoard() {
+        return herbivoresList.size() > 0;
+    }
+
+    public void setHerbivoresListEntityService() {
+        for (Entity entity : getEntityList()) {
+            if (entity instanceof Herbivore) {
+                herbivoresList.add((Herbivore) entity);
+            }
+        }
+    }
+
+    public void setGrassListEntityService() {
+        for (Entity entity : getEntityList()) {
+            if (entity instanceof Grass) {
+                grassList.add((Grass) entity);
+            }
+        }
+    }
+    public void deleteEntityMap(Entity entity) {
+        if (entity instanceof Grass) {
+            grassList.remove(entity);
+            deleteEntity(entity);
+        } else if (entity instanceof Herbivore) {
+            herbivoresList.remove(entity);
+            deleteEntity(entity);
+        }
+    }
+
+    public void addGrassMapBoard() {
+        int valueGrass = RandomIntValue.randomIndex(1, 3);
+        for (int i = 0; i < valueGrass; i++) {
+            Coordinate coordinate = getFreeCoordinate();
+            Grass grass = new Grass();
+            grassList.add(grass);
+            addEntityMap(coordinate, grass);
+        }
+    }
+    public int getValueGrass() {
+        return grassList.size();
     }
 }
 

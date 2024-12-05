@@ -4,10 +4,10 @@ import java.util.Random;
 
  public class RandomIntValue {
 
-     public static int randomIndex(int maxRandomIndex) {
+     public static int randomIndex(int minIndex, int maxIndex) {
          Random random = new Random();
-         if (maxRandomIndex > 1) {
-             return random.nextInt(0, maxRandomIndex);
+         if (maxIndex > 1) {
+             return random.nextInt(minIndex, maxIndex);
          } else {
              return 0;
          }

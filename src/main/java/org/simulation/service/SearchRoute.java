@@ -1,7 +1,6 @@
 package main.java.org.simulation.service;
 
 
-
 import main.java.org.simulation.Coordinate;
 import main.java.org.simulation.MapBoard;
 import main.java.org.simulation.entity.*;
@@ -10,7 +9,7 @@ import java.util.*;
 
 public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRoute {
 
-    private List<Coordinate> resultCoordinates = new LinkedList<>();
+    private List<Coordinate> foundCoordinatesPath = new LinkedList<>();
     private List<ParentChildCoordinate> savePath = new ArrayList<>();
     private final MapBoard mapBoard;
     private Queue<ParentChildCoordinate> checkCoordinates = new LinkedList<>();
@@ -22,12 +21,12 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
         this.isPathFound = false;
     }
 
-    public Coordinate getNextCoordinate(Coordinate currentCoordinate, Creature targetEat) {
+    public Coordinate getCoordinateNextStep(Coordinate currentCoordinate, Creature targetEat) {
         searchPath(currentCoordinate, targetEat);
         Coordinate result;
-        Coordinate validateCoordinate = getValidateCoordinate();
-        if (!validateCoordinate.equals(new Coordinate(1, 1))) {
-            result = validateCoordinate;
+        Coordinate coordinateNextStep = getCoordinateNextStep();
+        if (!coordinateNextStep.equals(new Coordinate(1, 1))) {
+            result = coordinateNextStep;
         } else {
             result = currentCoordinate;
         }
@@ -35,16 +34,16 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
         return result;
     }
 
-    private Coordinate getValidateCoordinate() {
+    private Coordinate getCoordinateNextStep() {
         Coordinate validateCoordinate = new Coordinate(1, 1);
-        if (resultCoordinates.size() != 0) {
-            validateCoordinate = resultCoordinates.get(resultCoordinates.size() - 1);
+        if (foundCoordinatesPath.size() != 0) {
+            validateCoordinate = foundCoordinatesPath.get(foundCoordinatesPath.size() - 1);
         }
         return validateCoordinate;
     }
 
     private void resetValueFields() {
-        resultCoordinates = new LinkedList<>();
+        foundCoordinatesPath = new LinkedList<>();
         savePath = new ArrayList<>();
         checkCoordinates = new LinkedList<>();
         isPathFound = false;
@@ -64,7 +63,8 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
                 break;
             } else if (!hasCoordinateInSavePatch(viewCoordinate)) {
                 savePath.add(viewCoordinate);
-                checkCoordinates.addAll(getFreeCoordinatesAboutCurrent(viewCoordinate.children));
+                Queue<ParentChildCoordinate> coordinates = getFreeCoordinatesAboutCurrent(viewCoordinateChildren);
+                checkCoordinates.addAll(coordinates);
             }
         }
         if (!isPathFound) {
@@ -99,10 +99,9 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
         for (int i = 0; i < directions.length; i++) {
             newX = currentX + directions[i][0];
             newY = currentY + directions[i][1];
-            for (Coordinate coordinate : mapBoard.getCoordinates()) {
-                if (coordinate.getX() == newX && coordinate.getY() == newY && !mapBoard.containsMapBoardIsHasRock(coordinate) && !mapBoard.hasWolfByCoordinate(coordinate)) {
-                    resultCoordinates.add(new ParentChildCoordinate(current, coordinate));
-                }
+            Coordinate checkingCoordinate = mapBoard.getCoordinateByXY(newX, newY);
+                if (!mapBoard.containsMapBoardIsHasRock(checkingCoordinate) && !mapBoard.hasPredatorByCoordinate(checkingCoordinate)) {
+                    resultCoordinates.add(new ParentChildCoordinate(current, checkingCoordinate));
             }
         }
         return resultCoordinates;
@@ -110,10 +109,10 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
 
     private void createSavePath(ParentChildCoordinate coordinateTargetChildren) {
         Coordinate currentCoordinateParent = coordinateTargetChildren.parent;
-        resultCoordinates.add(coordinateTargetChildren.children);
+        foundCoordinatesPath.add(coordinateTargetChildren.children);
         for (int i = savePath.size() - 1; i > 0; i--) {
             if (savePath.get(i).children.equals(currentCoordinateParent)) {
-                resultCoordinates.add(savePath.get(i).children);
+                foundCoordinatesPath.add(savePath.get(i).children);
                 currentCoordinateParent = savePath.get(i).parent;
             }
         }

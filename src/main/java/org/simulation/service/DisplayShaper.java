@@ -6,8 +6,6 @@ import main.java.org.simulation.entity.Entity;
 import main.java.org.simulation.enums.EntityEnumEmoji;
 import main.java.org.simulation.intarfaces.DisplayedInConsole;
 
-import java.util.Map;
-
 public class DisplayShaper implements DisplayedInConsole {
     private final MapBoard mapBoard;
 
@@ -15,7 +13,7 @@ public class DisplayShaper implements DisplayedInConsole {
         this.mapBoard = mapBoard;
     }
 
-    @Override
+        @Override
     public void displayInSquareView() {
         for (int x = 1; x < mapBoard.getSizeMapHeight(); x++) {
             for (int y = 1; y < mapBoard.getSizeMapWeight(); y++) {
@@ -25,6 +23,7 @@ public class DisplayShaper implements DisplayedInConsole {
                 System.out.print(emojiEntity + " ");
             }
             System.out.println(" ");
+
         }
     }
 

@@ -18,10 +18,18 @@ public class Navigator {
         this.entityService = entityService;
     }
 
-    String getTypeEntityNextStep(Creature creature) {
+    /**
+     * @param creature
+     * @return
+     * Определить тип клетки на следующем шаге, чтобы принять какое действие совершить
+     * Если getEntityByCoordinate возвращает Entity,
+     */
+    //
+
+    public String getTypeEntityNextStep(Creature creature) {
         Coordinate coordinateNextStep = nextCoordinateAboutCurrent(creature);
         Entity entityNextStep = mapBoard.getEntityByCoordinate(coordinateNextStep);
-        if (entityNextStep != null) {
+        if (!entityNextStep.getClass().getSimpleName().equals("Entity")) {
             nextCoordinateEntity = coordinateNextStep;
             return entityNextStep.getClass().getSimpleName();
         } else return "null";
@@ -32,7 +40,7 @@ public class Navigator {
     }
 
     private Coordinate nextCoordinateAboutCurrent(Creature creature) {
-        Coordinate currentCreatureCoordinate = entityService.getCoordinateCreature(creature);
-        return searchRoute.getNextCoordinate(currentCreatureCoordinate, creature);
+        Coordinate currentCreatureCoordinate = mapBoard.getCoordinateCreature(creature);
+        return searchRoute.getCoordinateNextStep(currentCreatureCoordinate, creature);
     }
 }

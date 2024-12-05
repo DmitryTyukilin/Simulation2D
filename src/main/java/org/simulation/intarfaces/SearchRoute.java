@@ -4,5 +4,5 @@ import main.java.org.simulation.Coordinate;
 import main.java.org.simulation.entity.Creature;
 
 public interface SearchRoute {
-    Coordinate getNextCoordinate(Coordinate currentCoordinate, Creature targetEat);
+    Coordinate getCoordinateNextStep(Coordinate currentCoordinate, Creature targetEat);
 }

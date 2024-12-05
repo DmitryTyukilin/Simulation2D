@@ -28,10 +28,12 @@ public class Simulation {
     public void startSimulation() {
         CreatorEntity creatorEntity = new CreatorEntity(mapBoard);
         creatorEntity.addEntityMap();
+        mapBoard.setHerbivoresListEntityService();
+        mapBoard.setGrassListEntityService();
         System.out.println("Исходные позиции");
         printer.printMap();
 
-            while (entityService.hasHareOnMapBoard()) {
+            while (mapBoard.hasHerbivoreMapBoard()) {
                 creatureService.makeMoveAllCreature();
                 moveCounter.recordMove();
                 printer.printMap();

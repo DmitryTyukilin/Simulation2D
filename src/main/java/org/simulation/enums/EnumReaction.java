@@ -1,7 +1,7 @@
 package main.java.org.simulation.enums;
 
 public enum EnumReaction {
-    GO("Place"),
+    GO("Null"),
     STOP("Wolf"),
     ATTACK("Hare"),
     EAT("Grass"),
