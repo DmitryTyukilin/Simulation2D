@@ -52,11 +52,6 @@ public final class MapBoard implements IMap {
         return new Coordinate(1, 1);
     }
 
-    public void deleteEntity(Entity entity) {
-        Coordinate coordinate = getCoordinateEntity(entity);
-        entityMap.put(coordinate, null);
-    }
-
     public List<Entity> getEntityList() {
         return new ArrayList<>(entityMap.values());
     }
@@ -75,7 +70,10 @@ public final class MapBoard implements IMap {
         return new Coordinate(1, 1);
     }
 
-    public Coordinate getCoordinateByXY(int x, int y) {
+    public Coordinate getCoordinateByXY(int x, int y) throws IllegalArgumentException {
+        if (x < 1 || y < 1){
+          throw new IllegalArgumentException("X Y должны быть больше 1");
+        }
         Coordinate resultCoordinate = new Coordinate(x, y);
         for (Coordinate coordinate : entityMap.keySet()) {
             if (coordinate != null && coordinate.equals(resultCoordinate)) {
@@ -181,6 +179,7 @@ public final class MapBoard implements IMap {
             }
         }
     }
+
     public void deleteEntityMap(Entity entity) {
         if (entity instanceof Grass) {
             grassList.remove(entity);
@@ -189,6 +188,11 @@ public final class MapBoard implements IMap {
             herbivoresList.remove(entity);
             deleteEntity(entity);
         }
+    }
+
+    private void deleteEntity(Entity entity) {
+        Coordinate coordinate = getCoordinateEntity(entity);
+        entityMap.put(coordinate, null);
     }
 
     public void addGrassMapBoard() {
@@ -200,6 +204,7 @@ public final class MapBoard implements IMap {
             addEntityMap(coordinate, grass);
         }
     }
+
     public int getValueGrass() {
         return grassList.size();
     }

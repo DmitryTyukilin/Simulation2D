@@ -24,13 +24,14 @@ public class CreatureService {
 
     public void makeMoveAllCreature() {
         List<Creature> creatures = mapBoard.getCreature();
-        while (creatures.size() > 0) {
-            int index = RandomIntValue.randomIndex(0, creatures.size() - 1);
-            Creature creature = creatures.get(index);
-                String typeNextMove = navigator.getTypeEntityNextStep(creature);
-                triggerActiveCreature(creature, typeNextMove);
-                creatures.remove(creature);
-
+        for (int i = creatures.size() - 1; i >= 0; i--) {
+            Creature creature = creatures.get(i);
+            String typeNextMove = navigator.getTypeEntityNextStep(creature);
+            triggerActiveCreature(creature, typeNextMove);
+            if (creature.getClass().getName().equals(Hare.class.getName()) && isHerbivoreDead((Herbivore) creature)) {
+                mapBoard.deleteEntityMap(creature);
+            }
+            creatures.remove(creature);
         }
     }
 
@@ -47,7 +48,11 @@ public class CreatureService {
         if (creature instanceof Herbivore) {
             if (reaction.equals(EnumReaction.EAT)) {
                 eatGrass();
-            } else moveCreature(creature);
+            } else if (reaction.equals(EnumReaction.STOP)) {
+                stayPut();
+            } else {
+                moveCreature(creature);
+            }
         }
     }
 
@@ -85,6 +90,10 @@ public class CreatureService {
             mapBoard.addGrassMapBoard();
         }
     }
+
+    private void stayPut() {
+    }
+
 
     private void goGrass(Creature creature) {
         Coordinate nextCoordinate = navigator.getNextCoordinateEntity();

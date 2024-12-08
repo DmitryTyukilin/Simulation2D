@@ -20,19 +20,19 @@ public class Navigator {
 
     /**
      * @param creature
-     * @return
-     * Определить тип клетки на следующем шаге, чтобы принять какое действие совершить
+     * @return Определить тип клетки на следующем шаге, чтобы принять какое действие совершить
      * Если getEntityByCoordinate возвращает Entity,
      */
     //
-
     public String getTypeEntityNextStep(Creature creature) {
         Coordinate coordinateNextStep = nextCoordinateAboutCurrent(creature);
         Entity entityNextStep = mapBoard.getEntityByCoordinate(coordinateNextStep);
-        if (!entityNextStep.getClass().getSimpleName().equals("Entity")) {
+        if (entityNextStep != null) {
             nextCoordinateEntity = coordinateNextStep;
             return entityNextStep.getClass().getSimpleName();
-        } else return "null";
+        } else {
+            return null;
+        }
     }
 
     public Coordinate getNextCoordinateEntity() {

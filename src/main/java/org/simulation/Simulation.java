@@ -32,13 +32,10 @@ public class Simulation {
         mapBoard.setGrassListEntityService();
         System.out.println("Исходные позиции");
         printer.printMap();
-
             while (mapBoard.hasHerbivoreMapBoard()) {
                 creatureService.makeMoveAllCreature();
                 moveCounter.recordMove();
                 printer.printMap();
-
-
             }
             System.out.println("Симуляция окончена");
     }

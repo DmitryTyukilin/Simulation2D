@@ -99,13 +99,20 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
         for (int i = 0; i < directions.length; i++) {
             newX = currentX + directions[i][0];
             newY = currentY + directions[i][1];
-            Coordinate checkingCoordinate = mapBoard.getCoordinateByXY(newX, newY);
+            if (isXYValidParameters(newX, newY)) {
+                Coordinate checkingCoordinate = mapBoard.getCoordinateByXY(newX, newY);
                 if (!mapBoard.containsMapBoardIsHasRock(checkingCoordinate) && !mapBoard.hasPredatorByCoordinate(checkingCoordinate)) {
                     resultCoordinates.add(new ParentChildCoordinate(current, checkingCoordinate));
+                }
             }
         }
         return resultCoordinates;
     }
+
+    private boolean isXYValidParameters(int x, int y) {
+        return x >= 1 && x <= mapBoard.getSizeMapHeight() && y >= 1 && y <= mapBoard.getSizeMapWeight();
+    }
+
 
     private void createSavePath(ParentChildCoordinate coordinateTargetChildren) {
         Coordinate currentCoordinateParent = coordinateTargetChildren.parent;

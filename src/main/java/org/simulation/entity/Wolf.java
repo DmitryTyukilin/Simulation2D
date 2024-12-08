@@ -11,6 +11,7 @@ public class Wolf extends Predator {
 
     @Override
     public EnumReaction makeMove(String typeNextMove) {
+        System.out.println("wolf сходил");
         return switch (typeNextMove) {
             case "null" -> EnumReaction.GO;
             case "Hare" -> EnumReaction.ATTACK;
@@ -22,6 +23,7 @@ public class Wolf extends Predator {
 
     @Override
     public void attack(Edible edible) {
+
         edible.takeDamage(DAMAGE);
     }
 

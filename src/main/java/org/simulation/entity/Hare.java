@@ -1,4 +1,5 @@
 package main.java.org.simulation.entity;
+
 import main.java.org.simulation.enums.EnumReaction;
 
 
@@ -10,11 +11,23 @@ public class Hare extends Herbivore {
 
     @Override
     public EnumReaction makeMove(String typeNextMove) {
-        return switch(typeNextMove) {
-            case "null" -> EnumReaction.GO;
-            case "Grass" -> EnumReaction.EAT;
-            default -> EnumReaction.STOP ;
-        };
+        if (typeNextMove.equals("Entity")) {
+            reduceHP();
+            return EnumReaction.GO;
+        } else if (typeNextMove.equals("Grass")) {
+            eatGrass();
+            return EnumReaction.EAT;
+        } else if (typeNextMove.equals("Wolf")) {
+            return EnumReaction.STOP;
+        } else return EnumReaction.STOP;
+    }
+
+    private void reduceHP() {
+        HP = HP - 1;
+    }
+
+    private void eatGrass() {
+        HP = HP + 5;
     }
 
     @Override

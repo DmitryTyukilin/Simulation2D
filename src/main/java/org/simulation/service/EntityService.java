@@ -4,6 +4,7 @@ package main.java.org.simulation.service;
 import main.java.org.simulation.Coordinate;
 import main.java.org.simulation.MapBoard;
 import main.java.org.simulation.entity.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 public class EntityService {
     private final MapBoard mapBoard;
     private final Map<Coordinate, Grass> mapGrass = new HashMap<>();
+    private int grassCounter = 5;
 
 
     public EntityService(MapBoard mapBoard) {
@@ -32,7 +34,8 @@ public class EntityService {
 
 
     public boolean isValueGrassLowOnMapBoard() {
-        return mapBoard.getValueGrass() < 2;
+        grassCounter--;
+        return grassCounter > 0 && mapBoard.getValueGrass() < 2;
     }
 }
 
