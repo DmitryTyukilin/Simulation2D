@@ -2,7 +2,7 @@ package main.java.org.simulation.service;
 
 
 import main.java.org.simulation.Coordinate;
-import main.java.org.simulation.MapBoard;
+import main.java.org.simulation.WordMap;
 import main.java.org.simulation.entity.*;
 
 import java.util.*;
@@ -11,13 +11,13 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
 
     private List<Coordinate> foundCoordinatesPath = new LinkedList<>();
     private List<ParentChildCoordinate> savePath = new ArrayList<>();
-    private final MapBoard mapBoard;
+    private final WordMap wordMap;
     private Queue<ParentChildCoordinate> checkCoordinates = new LinkedList<>();
     private boolean isPathFound;
 
 
-    public SearchRoute(MapBoard mapBoard) {
-        this.mapBoard = mapBoard;
+    public SearchRoute(WordMap wordMap) {
+        this.wordMap = wordMap;
         this.isPathFound = false;
     }
 
@@ -75,7 +75,7 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
     }
 
     private boolean isCoordinateEatForCreature(Coordinate coordinate, Creature creature) {
-        Entity entity = mapBoard.getEntityByCoordinate(coordinate);
+        Entity entity = wordMap.getEntityByCoordinate(coordinate);
         boolean result = false;
         if (creature instanceof Predator) {
             result = entity instanceof Herbivore;
@@ -100,8 +100,8 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
             newX = currentX + directions[i][0];
             newY = currentY + directions[i][1];
             if (isXYValidParameters(newX, newY)) {
-                Coordinate checkingCoordinate = mapBoard.getCoordinateByXY(newX, newY);
-                if (!mapBoard.containsMapBoardIsHasRock(checkingCoordinate) && !mapBoard.hasPredatorByCoordinate(checkingCoordinate)) {
+                Coordinate checkingCoordinate = wordMap.getCoordinateByXY(newX, newY);
+                if (!wordMap.containsMapBoardIsHasRock(checkingCoordinate) && !wordMap.hasPredatorByCoordinate(checkingCoordinate)) {
                     resultCoordinates.add(new ParentChildCoordinate(current, checkingCoordinate));
                 }
             }
@@ -110,7 +110,7 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
     }
 
     private boolean isXYValidParameters(int x, int y) {
-        return x >= 1 && x <= mapBoard.getSizeMapHeight() && y >= 1 && y <= mapBoard.getSizeMapWeight();
+        return x >= 1 && x <= wordMap.getSizeMapHeight() && y >= 1 && y <= wordMap.getSizeMapWeight();
     }
 
 

@@ -3,10 +3,11 @@ package main.java.org.simulation;
 import main.java.org.simulation.entity.*;
 import main.java.org.simulation.intarfaces.IMap;
 import main.java.org.simulation.utils.RandomIntValue;
+import main.java.org.simulation.entity.Hare;
 
 import java.util.*;
 
-public final class MapBoard implements IMap {
+public final class WordMap implements IMap {
     private final Map<Coordinate, Entity> entityMap = new HashMap<>();
     private final Integer sizeMapHeight;
     private final Integer sizeMapWeight;
@@ -14,7 +15,7 @@ public final class MapBoard implements IMap {
     private final List<Herbivore> herbivoresList = new ArrayList<>();
 
 
-    public MapBoard(int sizeMapHeight, int sizeMapWeight) {
+    public WordMap(int sizeMapHeight, int sizeMapWeight) {
         this.sizeMapHeight = sizeMapHeight;
         this.sizeMapWeight = sizeMapWeight;
         for (int coordinateX = 1; coordinateX < sizeMapHeight; coordinateX++) {
@@ -89,6 +90,19 @@ public final class MapBoard implements IMap {
         return entityMap.get(coordinate) != null;
     }
 
+    public boolean isAvailableToMove(Coordinate coordinate) {
+        return entityMap.get(coordinate) == null;
+    }
+
+    /*public boolean isAvailableCoordinateForMove(Coordinate coordinate) {
+        return hasCoordinateInSizeMap(coordinate) && entityMap.get(coordinate).getClass().equals(Rock.class.getName())
+
+    }*/
+
+    private boolean hasCoordinateInSizeMap(Coordinate coordinate) {
+        return coordinate.getX() <= sizeMapHeight && coordinate.getY() <= sizeMapWeight;
+    }
+
     public Entity getEntityByCoordinate(Coordinate coordinate) {
         if (isEntityByCoordinateNotNull(coordinate)) {
             return entityMap.get(coordinate);
@@ -130,6 +144,11 @@ public final class MapBoard implements IMap {
             }
         }
         return coordinatesFreePlace;
+    }
+
+    public void moveEntityByNewCoordinate(Coordinate newCoordinate, Entity entity) {
+        deleteEntity(entity);
+        addEntityMap(newCoordinate, entity);
     }
 
     public void addEntityMap(Coordinate coordinateNewPosition, Entity entity) {

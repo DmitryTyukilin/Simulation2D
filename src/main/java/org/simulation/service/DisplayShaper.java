@@ -1,27 +1,28 @@
 package main.java.org.simulation.service;
 
 import main.java.org.simulation.Coordinate;
-import main.java.org.simulation.MapBoard;
+import main.java.org.simulation.WordMap;
 import main.java.org.simulation.entity.Entity;
 import main.java.org.simulation.enums.EntityEnumEmoji;
 import main.java.org.simulation.intarfaces.DisplayedInConsole;
 
 public class DisplayShaper implements DisplayedInConsole {
-    private final MapBoard mapBoard;
+    private final WordMap wordMap;
 
-    public DisplayShaper(MapBoard mapBoard) {
-        this.mapBoard = mapBoard;
+    public DisplayShaper(WordMap wordMap) {
+        this.wordMap = wordMap;
     }
 
         @Override
     public void displayInSquareView() {
-        for (int x = 1; x < mapBoard.getSizeMapHeight(); x++) {
-            for (int y = 1; y < mapBoard.getSizeMapWeight(); y++) {
-                Coordinate coordinate = mapBoard.getCoordinateByXY(x, y);
-                Entity entity = mapBoard.getEntityByCoordinate(coordinate);
+        for (int x = 1; x < wordMap.getSizeMapHeight(); x++) {
+            for (int y = 1; y < wordMap.getSizeMapWeight(); y++) {
+                Coordinate coordinate = wordMap.getCoordinateByXY(x, y);
+                Entity entity = wordMap.getEntityByCoordinate(coordinate);
                 String emojiEntity = returnEmojiEntity(entity);
-                System.out.print(emojiEntity + " ");
+                System.out.print(" " + emojiEntity + "  ");
             }
+            System.out.println(" ");
             System.out.println(" ");
 
         }
