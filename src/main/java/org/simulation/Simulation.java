@@ -2,46 +2,47 @@ package main.java.org.simulation;
 
 
 import main.java.org.simulation.actions.init.CreatorEntity;
-import main.java.org.simulation.actions.init.GrassCreater;
+import main.java.org.simulation.actions.turn.GrassCreater;
+import main.java.org.simulation.actions.turn.CleanerDeadHerbivore;
 import main.java.org.simulation.actions.turn.MakeMoveAllCreature;
+import main.java.org.simulation.actions.turn.StatusSimulationChecker;
 import main.java.org.simulation.service.*;
 
 
 public class Simulation {
     private final WordMap wordMap;
-    ConsolePrinter printer;
-    SearchRoute searchRoute;
-    EntityService entityService;
-    Navigator navigator;
-    CreatureService creatureService;
-    MoveCounter moveCounter;
-    GrassCreater grassCreater;
+    private final CreatorEntity creatorEntity;
+    private final ConsolePrinter printer;
+    private final MoveCounter moveCounter;
+    private final GrassCreater grassCreater;
+    private final CleanerDeadHerbivore cleanerDeadHerbivore;
+    private final StatusSimulationChecker statusSimulationChecker;
 
     public Simulation() {
         this.wordMap = new WordMap(8, 8);
+        this.creatorEntity = new CreatorEntity(wordMap);
+        creatorEntity.execute();
         this.printer = new ConsolePrinter(new DisplayShaper(wordMap));
-        this.searchRoute = new SearchRoute(wordMap);
-        this.entityService = new EntityService(wordMap);
-        this.navigator = new Navigator(wordMap);
         this.grassCreater = new GrassCreater(wordMap);
-        this.creatureService = new CreatureService(wordMap, navigator, entityService, grassCreater);
         this.moveCounter = new MoveCounter();
+        this.cleanerDeadHerbivore = new CleanerDeadHerbivore(wordMap);
+        this.statusSimulationChecker = new StatusSimulationChecker(wordMap);
+
     }
 
     public void startSimulation() {
-        CreatorEntity creatorEntity = new CreatorEntity(wordMap);
-        creatorEntity.addEntityMap();
-        wordMap.setHerbivoresListEntityService();
-        wordMap.setGrassListEntityService();
         MakeMoveAllCreature makeMoveAllCreature = new MakeMoveAllCreature(wordMap);
         System.out.println("Исходные позиции");
         printer.printMap();
-        while (wordMap.hasHerbivoreMapBoard()) {
+        while (!statusSimulationChecker.isGameOver()) {
             makeMoveAllCreature.execute();
+            cleanerDeadHerbivore.execute();
+            grassCreater.execute();
             printer.printMap();
-            System.out.println();
             moveCounter.recordMove();
+
         }
+        System.out.println("Cиммуляция окончена");
 
     }
 

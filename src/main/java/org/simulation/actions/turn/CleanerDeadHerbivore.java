@@ -19,7 +19,7 @@ public class CleanerDeadHerbivore extends Action {
             if (entity instanceof Herbivore) {
                 Herbivore herbivore = (Herbivore) entity;
                 if (isHerbivoreDead(herbivore)) {
-                    wordMap.deleteEntityMap(herbivore);
+                    wordMap.deleteEntity(herbivore);
                 }
             }
         }

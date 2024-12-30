@@ -31,8 +31,6 @@ public class MakeMoveAllCreature extends Action {
         }
         for (Creature creature : creatures) {
             creature.makeMove(wordMap);
-            CleanerDeadHerbivore cleanerDeadHerbivore = new CleanerDeadHerbivore(wordMap);
-            cleanerDeadHerbivore.execute();
         }
     }
 

@@ -22,7 +22,6 @@ public class Hare extends Herbivore {
     @Override
     public void takeDamage(int damage) {
         super.HP = HP - damage;
-        System.out.println(" hare hp "  + super.HP);
     }
 
     @Override
@@ -30,7 +29,7 @@ public class Hare extends Herbivore {
         Entity entity = wordMap.getEntityByCoordinate(coordinateEat);
         if (entity instanceof Grass) {
             Grass grass = wordMap.getGrass(coordinateEat);
-            wordMap.deleteEntityMap(grass);
+            wordMap.deleteEntity(grass);
             eatGrass();
 
         }
@@ -40,6 +39,5 @@ public class Hare extends Herbivore {
     public void makeMove(WordMap wordMap) {
         super.makeMove(wordMap);
         reduceHP();
-        System.out.println("сделал ход потерял хп" + super.HP);
     }
 }

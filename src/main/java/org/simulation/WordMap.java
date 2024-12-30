@@ -2,8 +2,7 @@ package main.java.org.simulation;
 
 import main.java.org.simulation.entity.*;
 import main.java.org.simulation.intarfaces.IMap;
-import main.java.org.simulation.utils.RandomIntValue;
-import main.java.org.simulation.entity.Hare;
+
 
 import java.util.*;
 
@@ -11,8 +10,6 @@ public final class WordMap implements IMap {
     private final Map<Coordinate, Entity> entityMap = new HashMap<>();
     private final Integer sizeMapHeight;
     private final Integer sizeMapWeight;
-    private final List<Grass> grassList = new ArrayList<>();
-    private final List<Herbivore> herbivoresList = new ArrayList<>();
 
 
     public WordMap(int sizeMapHeight, int sizeMapWeight) {
@@ -33,16 +30,6 @@ public final class WordMap implements IMap {
         return sizeMapWeight;
     }
 
-    public List<Creature> getCreature() {
-        List<Creature> creaturesList = new ArrayList<>();
-        for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
-            if (entry.getValue() instanceof Creature) {
-                Creature creature = (Creature) entry.getValue();
-                creaturesList.add(creature);
-            }
-        }
-        return creaturesList;
-    }
 
     public Coordinate getCoordinateEntity(Entity entity) {
         for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
@@ -57,11 +44,7 @@ public final class WordMap implements IMap {
         return new ArrayList<>(entityMap.values());
     }
 
-    /**
-     * @param creature
-     * @return null теоретически не должно быть так как координаты на карте не зануляются в нулл
-     * и всегда сущетсвуют на протяжении всего цикла проекта
-     */
+
     public Coordinate getCoordinateCreature(Creature creature) {
         for (Map.Entry<Coordinate, Entity> entry : entityMap.entrySet()) {
             if (isEntityByCoordinateNotNull(entry.getKey()) && entry.getValue().equals(creature)) {
@@ -72,8 +55,8 @@ public final class WordMap implements IMap {
     }
 
     public Coordinate getCoordinateByXY(int x, int y) throws IllegalArgumentException {
-        if (x < 1 || y < 1){
-          throw new IllegalArgumentException("X Y должны быть больше 1");
+        if (x < 1 || y < 1) {
+            throw new IllegalArgumentException("X Y должны быть больше 1");
         }
         Coordinate resultCoordinate = new Coordinate(x, y);
         for (Coordinate coordinate : entityMap.keySet()) {
@@ -94,14 +77,6 @@ public final class WordMap implements IMap {
         return entityMap.get(coordinate) == null;
     }
 
-    /*public boolean isAvailableCoordinateForMove(Coordinate coordinate) {
-        return hasCoordinateInSizeMap(coordinate) && entityMap.get(coordinate).getClass().equals(Rock.class.getName())
-
-    }*/
-
-    private boolean hasCoordinateInSizeMap(Coordinate coordinate) {
-        return coordinate.getX() <= sizeMapHeight && coordinate.getY() <= sizeMapWeight;
-    }
 
     public Entity getEntityByCoordinate(Coordinate coordinate) {
         if (isEntityByCoordinateNotNull(coordinate)) {
@@ -109,14 +84,6 @@ public final class WordMap implements IMap {
         } else return new Entity();
     }
 
-
-    public Hare getHare(Coordinate coordinate) {
-        Entity entity = entityMap.get(coordinate);
-        if (entity instanceof Hare) {
-            return (Hare) entity;
-        }
-        return null;
-    }
 
     public Grass getGrass(Coordinate coordinate) {
         Entity entity = entityMap.get(coordinate);
@@ -146,17 +113,9 @@ public final class WordMap implements IMap {
         return coordinatesFreePlace;
     }
 
-    public void moveEntityByNewCoordinate(Coordinate newCoordinate, Entity entity) {
-        deleteEntity(entity);
-        addEntityMap(newCoordinate, entity);
-    }
 
     public void addEntityMap(Coordinate coordinateNewPosition, Entity entity) {
         entityMap.put(coordinateNewPosition, entity);
-    }
-
-    public boolean hasEntityOnMapBoard(Entity entity) {
-        return entityMap.containsValue(entity);
     }
 
     public boolean containsMapBoardIsHasRock(Coordinate coordinate) {
@@ -175,58 +134,11 @@ public final class WordMap implements IMap {
         return result;
     }
 
-    public List<Coordinate> getListCoordinates() {
-        return new ArrayList<>(entityMap.keySet());
-    }
-
-    public boolean hasHerbivoreMapBoard() {
-        return herbivoresList.size() > 0;
-    }
-
-    public void setHerbivoresListEntityService() {
-        for (Entity entity : getEntityList()) {
-            if (entity instanceof Herbivore) {
-                herbivoresList.add((Herbivore) entity);
-            }
-        }
-    }
-
-    public void setGrassListEntityService() {
-        for (Entity entity : getEntityList()) {
-            if (entity instanceof Grass) {
-                grassList.add((Grass) entity);
-            }
-        }
-    }
-
-    public void deleteEntityMap(Entity entity) {
-        if (entity instanceof Grass) {
-            grassList.remove(entity);
-            deleteEntity(entity);
-        } else if (entity instanceof Herbivore) {
-            herbivoresList.remove(entity);
-            deleteEntity(entity);
-        }
-    }
-
-    private void deleteEntity(Entity entity) {
+    public void deleteEntity(Entity entity) {
         Coordinate coordinate = getCoordinateEntity(entity);
         entityMap.put(coordinate, null);
     }
 
-    public void addGrassMapBoard() {
-        int valueGrass = RandomIntValue.randomIndex(1, 3);
-        for (int i = 0; i < valueGrass; i++) {
-            Coordinate coordinate = getFreeCoordinate();
-            Grass grass = new Grass();
-            grassList.add(grass);
-            addEntityMap(coordinate, grass);
-        }
-    }
-
-    public int getValueGrass() {
-        return grassList.size();
-    }
 }
 
 

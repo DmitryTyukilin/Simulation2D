@@ -12,6 +12,7 @@ public class ConsolePrinter {
 
     public void printMap() {
         displayed.displayInSquareView();
+        System.out.println();
     }
 
 }

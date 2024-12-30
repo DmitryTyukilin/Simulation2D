@@ -1,6 +1,5 @@
 package main.java.org.simulation.entity;
 
-import main.java.org.simulation.enums.EnumReaction;
 import main.java.org.simulation.intarfaces.Edible;
 
 

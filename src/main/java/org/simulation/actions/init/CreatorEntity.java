@@ -3,15 +3,17 @@ package main.java.org.simulation.actions.init;
 
 
 import main.java.org.simulation.Coordinate;
+import main.java.org.simulation.WordMap;
+import main.java.org.simulation.actions.Action;
 import main.java.org.simulation.entity.*;
-import main.java.org.simulation.intarfaces.IMap;
+import main.java.org.simulation.utils.PercentCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class CreatorEntity {
-    IMap mapBoard;
+public class CreatorEntity extends Action {
+
     private final Integer numberWolf;
     private final Integer numberHare;
     private final Integer numberGrass;
@@ -20,24 +22,26 @@ public class CreatorEntity {
     private final Integer hpMax;
     Random random = new Random();
 
-    public CreatorEntity(IMap mapBoard) {
-        this.mapBoard = mapBoard;
-        this.numberWolf = 1;
-        this.numberHare = 2;
-        this.numberGrass = 12;
-        this.numberRock = 5;
-        this.hpMin = 4;
-        this.hpMax = 8;
-    }
-
-    public void addEntityMap() {
+    @Override
+    public void execute() {
         List<Entity> entityList = getEntityList();
         for (Entity entity : entityList) {
-            List<Coordinate> freeCoordinates = mapBoard.getFreeListCoordinates();
+            List<Coordinate> freeCoordinates = wordMap.getFreeListCoordinates();
             int randomPlaceCreature = random.nextInt(freeCoordinates.size());
             Coordinate freeCoordinateRandom = freeCoordinates.get(randomPlaceCreature);
-            mapBoard.addEntityMap(freeCoordinateRandom, entity);
+            wordMap.addEntityMap(freeCoordinateRandom, entity);
         }
+    }
+
+    public CreatorEntity(WordMap mapWord) {
+        super(mapWord);
+        int mapWordSize = mapWord.getSizeMapHeight() * mapWord.getSizeMapWeight();
+        this.numberWolf = PercentCalculator.numberFromPercent(mapWordSize, 5);
+        this.numberHare = PercentCalculator.numberFromPercent(mapWordSize, 8);
+        this.numberGrass = PercentCalculator.numberFromPercent(mapWordSize, 7);
+        this.numberRock = PercentCalculator.numberFromPercent(mapWordSize, 5);
+        this.hpMin = 4;
+        this.hpMax = 15;
     }
 
     private List<Entity> getEntityList() {
