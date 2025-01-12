@@ -9,6 +9,11 @@ public class Wolf extends Predator {
 
     private final static int DAMAGE = 3;
 
+    public Wolf(int speed) {
+        super();
+        this.speed = speed;
+    }
+
     @Override
     public void attack(Edible edible) {
         edible.takeDamage(DAMAGE);

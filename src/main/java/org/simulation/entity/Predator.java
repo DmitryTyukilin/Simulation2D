@@ -7,7 +7,12 @@ import main.java.org.simulation.intarfaces.Edible;
 public abstract class Predator extends Creature implements DamageDealer {
 
 
+
     public abstract void attack(Edible herbivore);
 
+
+    public int getSpeed() {
+        return speed;
+    }
 }
 

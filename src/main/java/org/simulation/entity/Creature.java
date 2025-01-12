@@ -11,6 +11,7 @@ import java.util.Objects;
 public abstract class Creature extends Entity {
 
     private Coordinate grass;
+    protected int speed;
 
 
     public Creature() {
@@ -69,8 +70,12 @@ public abstract class Creature extends Entity {
         return entity instanceof Grass;
     }
 
+    public int getSpeed() {
+        return speed;
+    }
 
     protected abstract void eat(Coordinate coordinateEat, WordMap wordMap);
+
 
     @Override
     public boolean equals(Object o) {

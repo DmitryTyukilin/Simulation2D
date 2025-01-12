@@ -2,51 +2,68 @@ package main.java.org.simulation;
 
 
 import main.java.org.simulation.actions.init.CreatorEntity;
-import main.java.org.simulation.actions.turn.GrassCreater;
+import main.java.org.simulation.actions.turn.ResourcesCreater;
 import main.java.org.simulation.actions.turn.CleanerDeadHerbivore;
 import main.java.org.simulation.actions.turn.MakeMoveAllCreature;
-import main.java.org.simulation.actions.turn.StatusSimulationChecker;
 import main.java.org.simulation.service.*;
 
 
-public class Simulation {
+public class Simulation implements Runnable {
     private final WordMap wordMap;
     private final CreatorEntity creatorEntity;
     private final ConsolePrinter printer;
     private final MoveCounter moveCounter;
-    private final GrassCreater grassCreater;
+    private final ResourcesCreater grassCreater;
     private final CleanerDeadHerbivore cleanerDeadHerbivore;
-    private final StatusSimulationChecker statusSimulationChecker;
+    private volatile boolean paused = false;
+    private volatile boolean stop = false;
+
 
     public Simulation() {
-        this.wordMap = new WordMap(8, 8);
+        this.wordMap = new WordMap(10, 10);
         this.creatorEntity = new CreatorEntity(wordMap);
         creatorEntity.execute();
         this.printer = new ConsolePrinter(new DisplayShaper(wordMap));
-        this.grassCreater = new GrassCreater(wordMap);
+        this.grassCreater = new ResourcesCreater(wordMap, creatorEntity);
         this.moveCounter = new MoveCounter();
         this.cleanerDeadHerbivore = new CleanerDeadHerbivore(wordMap);
-        this.statusSimulationChecker = new StatusSimulationChecker(wordMap);
 
     }
 
-    public void startSimulation() {
+    public void run() {
         MakeMoveAllCreature makeMoveAllCreature = new MakeMoveAllCreature(wordMap);
-        System.out.println("Исходные позиции");
-        printer.printMap();
-        while (!statusSimulationChecker.isGameOver()) {
-            makeMoveAllCreature.execute();
-            cleanerDeadHerbivore.execute();
-            grassCreater.execute();
-            printer.printMap();
-            moveCounter.recordMove();
-
+        while (!stop) {
+            if (!paused) {
+                try {
+                    makeMoveAllCreature.execute();
+                    cleanerDeadHerbivore.execute();
+                    grassCreater.execute();
+                    printer.printMap();
+                    moveCounter.recordMove();
+                    System.out.println("Введите '1' для паузы, '2' для продолжения или '3' для выхода:");
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        System.out.println("Cиммуляция окончена");
-
     }
 
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        paused = false;
+    }
+
+    public void stop() {
+        stop = true;
+    }
 }
+
+
+
 
 
 

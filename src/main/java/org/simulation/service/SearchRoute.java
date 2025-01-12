@@ -21,10 +21,10 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
         this.isPathFound = false;
     }
 
-    public Coordinate getCoordinateNextStep(Coordinate currentCoordinate, Creature targetEat) {
-        searchPath(currentCoordinate, targetEat);
+    public Coordinate getCoordinateNextStep(Coordinate currentCoordinate, Creature currentCreature) {
+        searchPath(currentCoordinate, currentCreature);
         Coordinate result;
-        Coordinate coordinateNextStep = getCoordinateNextStep();
+        Coordinate coordinateNextStep = getCoordinateNextStep(currentCreature);
         if (!coordinateNextStep.equals(new Coordinate(1, 1))) {
             result = coordinateNextStep;
         } else {
@@ -34,13 +34,26 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
         return result;
     }
 
-    private Coordinate getCoordinateNextStep() {
+    private Coordinate getCoordinateNextStep(Creature currentCreature) {
         Coordinate validateCoordinate = new Coordinate(1, 1);
         if (foundCoordinatesPath.size() != 0) {
-            validateCoordinate = foundCoordinatesPath.get(foundCoordinatesPath.size() - 1);
+            if (hasCreatureSpeed(currentCreature) && !isSpeedMorePathSize(currentCreature)) {
+                validateCoordinate = foundCoordinatesPath.get(foundCoordinatesPath.size() - 1 - currentCreature.getSpeed());
+            } else {
+                validateCoordinate = foundCoordinatesPath.get(foundCoordinatesPath.size() - 1);
+            }
         }
         return validateCoordinate;
     }
+
+    private boolean hasCreatureSpeed(Creature creature) {
+        return creature.getSpeed() > 0;
+    }
+
+    private boolean isSpeedMorePathSize(Creature creature) {
+        return foundCoordinatesPath.size() <= creature.getSpeed();
+    }
+
 
     private void resetValueFields() {
         foundCoordinatesPath = new LinkedList<>();
@@ -55,7 +68,7 @@ public class SearchRoute implements main.java.org.simulation.intarfaces.SearchRo
         checkCoordinates.add(currentCoordinate);
         while (!checkCoordinates.isEmpty()) {
             ParentChildCoordinate viewCoordinate = checkCoordinates.remove();
-            Coordinate viewCoordinateChildren = viewCoordinate.getChildren();//рассматриваемая координата
+            Coordinate viewCoordinateChildren = viewCoordinate.getChildren();
             if (isCoordinateEatForCreature(viewCoordinateChildren, creature)) {
                 savePath.add(viewCoordinate);
                 isPathFound = true;

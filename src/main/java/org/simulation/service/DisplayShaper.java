@@ -20,7 +20,7 @@ public class DisplayShaper implements DisplayedInConsole {
                 Coordinate coordinate = wordMap.getCoordinateByXY(x, y);
                 Entity entity = wordMap.getEntityByCoordinate(coordinate);
                 String emojiEntity = returnEmojiEntity(entity);
-                System.out.print(" " + emojiEntity + "  ");
+                System.out.print("     " + emojiEntity + "  ");
             }
             System.out.println(" ");
             System.out.println(" ");

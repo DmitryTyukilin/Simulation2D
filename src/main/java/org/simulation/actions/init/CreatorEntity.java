@@ -14,12 +14,13 @@ import java.util.Random;
 
 public class CreatorEntity extends Action {
 
-    private final Integer numberWolf;
-    private final Integer numberHare;
-    private final Integer numberGrass;
-    private final Integer numberRock;
-    private final Integer hpMin;
-    private final Integer hpMax;
+    private final int numberWolf;
+    private final int numberHare;
+    private final int numberGrass;
+    private final int numberRock;
+    private final int hpMin;
+    private final int hpMax;
+    private final int SPEED = 2;
     Random random = new Random();
 
     @Override
@@ -56,7 +57,7 @@ public class CreatorEntity extends Action {
     private List<Wolf> createListWolf() {
         List<Wolf> wolfs = new ArrayList<>();
         for (int i = 0; i < numberWolf; i++) {
-            wolfs.add(new Wolf());
+            wolfs.add(new Wolf(SPEED));
         }
         return wolfs;
     }
